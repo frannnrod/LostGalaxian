@@ -11,6 +11,7 @@ public class Juego extends InterfaceJuego {
 	// El objeto Entorno que controla el tiempo y otros
 	private Entorno entorno;
 	Asteroid[] asteroid;
+	AstroMegaShip astromegaship;
 	Image imgFondo;
 	
 
@@ -22,6 +23,7 @@ public class Juego extends InterfaceJuego {
 		this.entorno = new Entorno(this, "Lost Galaxian - Grupo 3 - v1", 800, 600);
 		
 		imgFondo = Herramientas.cargarImagen("fondo.jpg");
+		astromegaship = new AstroMegaShip(400, 500);
 		this.asteroid = new Asteroid[6]; 
 		for(int i = 0; i<this.asteroid.length; i++) {
 			this.asteroid[i] = new Asteroid();
@@ -42,6 +44,23 @@ public class Juego extends InterfaceJuego {
 	 */
 	public void tick() {
 		entorno.dibujarImagen(imgFondo, 400, 305, 0,1.5);
+		if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+			astromegaship.moverDerecha();
+			astromegaship.prenderMotor();
+		}
+		else {
+			astromegaship.apagarMotor();
+			
+	        }
+		if(entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+			astromegaship.moverIzquierda();
+			astromegaship.prenderMotor();
+		}
+		else {
+			astromegaship.apagarMotor();
+			
+	        }	
+			
 		for (int i=0;i<asteroid.length;i++)
 		{
 			if (!asteroid[i].getAtrapada())
@@ -59,6 +78,7 @@ public class Juego extends InterfaceJuego {
 				}
 			}
 		}
+		astromegaship.dibujarse(entorno);
 
 		
 	}
