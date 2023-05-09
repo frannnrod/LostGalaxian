@@ -1,6 +1,8 @@
 package juego;
 
 
+import java.awt.Image;
+
 import entorno.Entorno;
 import entorno.Herramientas;
 import entorno.InterfaceJuego;
@@ -9,6 +11,7 @@ public class Juego extends InterfaceJuego {
 	// El objeto Entorno que controla el tiempo y otros
 	private Entorno entorno;
 	Asteroid[] asteroid;
+	Image imgFondo;
 	
 
 	// Variables y métodos propios de cada grupo
@@ -18,7 +21,8 @@ public class Juego extends InterfaceJuego {
 		// Inicializa el objeto entorno
 		this.entorno = new Entorno(this, "Lost Galaxian - Grupo 3 - v1", 800, 600);
 		
-		this.asteroid = new Asteroid[10]; 
+		imgFondo = Herramientas.cargarImagen("fondo.jpg");
+		this.asteroid = new Asteroid[6]; 
 		for(int i = 0; i<this.asteroid.length; i++) {
 			this.asteroid[i] = new Asteroid();
 		}
@@ -37,6 +41,7 @@ public class Juego extends InterfaceJuego {
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
+		entorno.dibujarImagen(imgFondo, 400, 305, 0,1.5);
 		for (int i=0;i<asteroid.length;i++)
 		{
 			if (!asteroid[i].getAtrapada())
