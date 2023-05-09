@@ -8,6 +8,7 @@ import entorno.InterfaceJuego;
 public class Juego extends InterfaceJuego {
 	// El objeto Entorno que controla el tiempo y otros
 	private Entorno entorno;
+	Asteroid[] asteroid;
 	
 
 	// Variables y métodos propios de cada grupo
@@ -16,6 +17,11 @@ public class Juego extends InterfaceJuego {
 	Juego() {
 		// Inicializa el objeto entorno
 		this.entorno = new Entorno(this, "Lost Galaxian - Grupo 3 - v1", 800, 600);
+		
+		this.asteroid = new Asteroid[10]; 
+		for(int i = 0; i<this.asteroid.length; i++) {
+			this.asteroid[i] = new Asteroid();
+		}
 		
 		// Inicializar lo que haga falta para el juego
 		// ...
@@ -31,6 +37,23 @@ public class Juego extends InterfaceJuego {
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
+		for (int i=0;i<asteroid.length;i++)
+		{
+			if (!asteroid[i].getAtrapada())
+			{
+				asteroid[i].dibujarse(entorno);
+			}		
+		}
+		if (!entorno.estaPresionada('P'))
+		{
+			for (int i=0;i<asteroid.length;i++)
+			{
+				if (!asteroid[i].getAtrapada() && asteroid[i].getY() < 600)
+				{
+					asteroid[i].avanzar();
+				}
+			}
+		}
 
 		
 	}
