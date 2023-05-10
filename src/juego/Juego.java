@@ -11,6 +11,7 @@ public class Juego extends InterfaceJuego {
 	// El objeto Entorno que controla el tiempo y otros
 	private Entorno entorno;
 	Asteroid[] asteroid;
+	Destructor[] destructor;
 	private AstroMegaShip astromegaship;
 	Image imgFondo;
 	
@@ -25,8 +26,12 @@ public class Juego extends InterfaceJuego {
 		imgFondo = Herramientas.cargarImagen("fondo.jpg");
 		astromegaship = new AstroMegaShip(400, 500);
 		this.asteroid = new Asteroid[6]; 
+		this.destructor = new Destructor[7];
 		for(int i = 0; i<this.asteroid.length; i++) {
 			this.asteroid[i] = new Asteroid();
+		}
+		for(int i = 0; i<this.asteroid.length; i++) {
+			this.destructor[i] = new Destructor();
 		}
 		
 		// Inicializar lo que haga falta para el juego
@@ -68,12 +73,25 @@ public class Juego extends InterfaceJuego {
 				asteroid[i].dibujarse(entorno);
 			}		
 		}
+		for (int i=0;i<destructor.length;i++)
+		{
+			if (!destructor[i].getAtrapada())
+			{
+				destructor[i].dibujarse(entorno);
+			}		
+		}
 		if (!entorno.estaPresionada('P'))
 		{
 			for (int i=0;i<asteroid.length;i++)
 			{
 				{
 					asteroid[i].avanzar(astromegaship);
+				}
+			}
+			for (int i=0;i<destructor.length;i++)
+			{
+				{
+					destructor[i].avanzar(astromegaship);
 				}
 			}
 		}
