@@ -24,7 +24,7 @@ public class Juego extends InterfaceJuego {
 		
 		imgFondo = Herramientas.cargarImagen("fondo.jpg");
 		astromegaship = new AstroMegaShip(400, 500);
-		this.asteroid = new Asteroid[6]; 
+		this.asteroid = new Asteroid[2]; 
 		for(int i = 0; i<this.asteroid.length; i++) {
 			this.asteroid[i] = new Asteroid();
 		}
