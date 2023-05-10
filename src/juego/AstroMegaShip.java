@@ -36,7 +36,7 @@ public class AstroMegaShip {
 
 		
 		public void moverDerecha() {
-			this.x += Math.cos(this.angulo)*20;
+			this.x += Math.cos(this.angulo)*5;
 			if(this.x > 810) {
 				this.x=800;
 			}
@@ -46,7 +46,7 @@ public class AstroMegaShip {
 		
 		}
 		public void moverIzquierda() {
-			this.x -= Math.cos(this.angulo)*20;
+			this.x -= Math.cos(this.angulo)*5;
 			if(this.x > 810) {
 				this.x=800;
 			}
