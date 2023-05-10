@@ -49,7 +49,7 @@ public class Asteroid {
 		
 		}
 
-		public void avanzar() 
+		public void avanzar(AstroMegaShip astromegaship) 
 		{
 			this.y+= this.velocidad*0.3 * Math.sin(this.angulo);
 			this.x+= this.velocidad*0.7 * Math.cos(this.angulo);	
@@ -65,6 +65,10 @@ public class Asteroid {
 				this.x = 780;
 				this.angulo = Math.PI - this.angulo;
 			   }
+			if (this.y > 630) {
+				this.y = 0;
+			}
+			if ((this.y > 470 && this.y <510) && (this.x - astromegaship.x) > -30 && (this.x - astromegaship.x) < 30)  System.out.println(("COLISION PERRAS"));
 		}
 
 		public double getY() 

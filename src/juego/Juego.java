@@ -11,7 +11,7 @@ public class Juego extends InterfaceJuego {
 	// El objeto Entorno que controla el tiempo y otros
 	private Entorno entorno;
 	Asteroid[] asteroid;
-	AstroMegaShip astromegaship;
+	private AstroMegaShip astromegaship;
 	Image imgFondo;
 	
 
@@ -72,9 +72,8 @@ public class Juego extends InterfaceJuego {
 		{
 			for (int i=0;i<asteroid.length;i++)
 			{
-				if (!asteroid[i].getAtrapada() && asteroid[i].getY() < 600)
 				{
-					asteroid[i].avanzar();
+					asteroid[i].avanzar(astromegaship);
 				}
 			}
 		}
