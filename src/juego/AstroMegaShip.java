@@ -16,7 +16,7 @@ public class AstroMegaShip {
 		Image img2;
 		Image bullet;
 		boolean motor;
-		boolean disparo;
+		boolean disparar;
 		
 		public AstroMegaShip(int x, int y) 
 		{
@@ -25,9 +25,10 @@ public class AstroMegaShip {
 		    motor=false; 
 			img1 = Herramientas.cargarImagen("nave.png");
 			img2 = Herramientas.cargarImagen("nave2.png");
-			
+			bullet = Herramientas.cargarImagen("bullet.png");
 			bx=x;
 			by=y;
+			disparar=false;
 		}
 		
 		public void dibujarse(Entorno entorno)
@@ -39,6 +40,20 @@ public class AstroMegaShip {
 			else
 				entorno.dibujarImagen(img1, this.x, this.y, 0, 0.1);
 		}
+//		public void disparo(Entorno entorno) {
+//			entorno.dibujarImagen(bullet, this.x, this.by, 0,0.1);
+//			this.disparar=true;
+//			System.out.println("disparo");
+//		}
+//		public void avanzarDisparo() {
+//			this.by-=1;
+//		}
+//		public void frenardisparo() {
+//			if (this.by<0){
+//			disparar=false;
+//			}
+//		}
+		
 
 
 		
