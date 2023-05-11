@@ -97,15 +97,20 @@ public class Juego extends InterfaceJuego {
 			}
 		}
 		astromegaship.dibujarse(entorno);
-//		if (entorno.sePresiono(entorno.TECLA_ESPACIO)&& astromegaship.disparar==false) {
-//			astromegaship.disparo(entorno);
-//		}
-//		do {
-//			astromegaship.frenardisparo();
-//			astromegaship.avanzarDisparo();
-//		}
-//		while(astromegaship.disparar);
-		
+		if (entorno.sePresiono(entorno.TECLA_ESPACIO)&& bala==false) {
+			bala=true;
+			astromegaship.disparo(entorno);
+		}
+		if (bala) {
+			if(astromegaship.by>0) {
+				astromegaship.avanzarDisparo();
+				astromegaship.disparo(entorno);
+			}
+			else {
+				bala=false;
+				astromegaship.by=450;
+			}
+		}
 
 
 		

@@ -40,19 +40,19 @@ public class AstroMegaShip {
 			else
 				entorno.dibujarImagen(img1, this.x, this.y, 0, 0.1);
 		}
-//		public void disparo(Entorno entorno) {
-//			entorno.dibujarImagen(bullet, this.x, this.by, 0,0.1);
-//			this.disparar=true;
-//			System.out.println("disparo");
-//		}
-//		public void avanzarDisparo() {
-//			this.by-=1;
-//		}
-//		public void frenardisparo() {
-//			if (this.by<0){
-//			disparar=false;
-//			}
-//		}
+		public void disparo(Entorno entorno) {
+			entorno.dibujarImagen(bullet, this.x, this.by, 0,0.2);
+			this.disparar=true;
+			System.out.println("disparo");
+		}
+		public void avanzarDisparo() {
+				this.by-=17;				
+		}
+		public void frenardisparo() {
+			if (this.by<0){
+			disparar=false;
+			}
+		}
 		
 
 

@@ -68,7 +68,7 @@ public class Asteroid {
 			if (this.y > 630) {
 				this.y = 0;
 			}
-			if ((this.y > 424 && this.y <555) && (this.x - astromegaship.x) > -30 && (this.x - astromegaship.x) < 30)  System.out.println(("COLISION PERRAS"));
+			if ((this.y > 424 && this.y <555) && (this.x - astromegaship.x) > -30 && (this.x - astromegaship.x) < 30);
 		}
 
 		public double getY() 
