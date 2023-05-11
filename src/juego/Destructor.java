@@ -57,7 +57,7 @@ public class Destructor {
 	
 	}
 	public void disparar(Entorno entorno) {
-		entorno.dibujarImagen(bulletd, this.x, this.by, 0,0.2);
+		entorno.dibujarImagen(bulletd, this.bx, this.by, 0,0.2);
 		this.by+=5;
 		if(this.by>600) {
 			this.by=this.y;

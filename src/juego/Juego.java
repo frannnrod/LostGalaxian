@@ -93,7 +93,6 @@ public class Juego extends InterfaceJuego {
 				{
 					asteroid[i].avanzar(astromegaship);
 					if (asteroid[i].colision) {
-						System.exit(i);
 					}
 				}
 			}
@@ -109,7 +108,6 @@ public class Juego extends InterfaceJuego {
 							System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
 						}
 						if (destructor[i].colision) {
-							System.exit(i);
 						}
 					}
 					
