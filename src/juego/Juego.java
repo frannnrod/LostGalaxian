@@ -14,6 +14,7 @@ public class Juego extends InterfaceJuego {
 	Destructor[] destructor;
 	private AstroMegaShip astromegaship;
 	Image imgFondo;
+	boolean bala=false;
 	
 
 	// Variables y métodos propios de cada grupo
@@ -48,7 +49,7 @@ public class Juego extends InterfaceJuego {
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
-		entorno.dibujarImagen(imgFondo, 400, 305, 0,1.5);
+		entorno.dibujarImagen(imgFondo, 400, 300, 0);
 		if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			astromegaship.moverDerecha();
 			astromegaship.prenderMotor();
@@ -96,6 +97,9 @@ public class Juego extends InterfaceJuego {
 			}
 		}
 		astromegaship.dibujarse(entorno);
+		if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+			astromegaship.disparar(entorno);
+		}
 
 		
 	}

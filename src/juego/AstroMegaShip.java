@@ -9,10 +9,14 @@ public class AstroMegaShip {
 	// Variables de instancia
 		double x;
 		double y;
+		double bx;
+		double by;
 		double angulo;
 		Image img1;
 		Image img2;
+		Image bullet;
 		boolean motor;
+		boolean disparo;
 		
 		public AstroMegaShip(int x, int y) 
 		{
@@ -21,6 +25,9 @@ public class AstroMegaShip {
 		    motor=false; 
 			img1 = Herramientas.cargarImagen("nave.png");
 			img2 = Herramientas.cargarImagen("nave2.png");
+			
+			bx=x;
+			by=y;
 		}
 		
 		public void dibujarse(Entorno entorno)
