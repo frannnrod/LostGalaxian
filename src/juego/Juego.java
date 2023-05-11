@@ -104,7 +104,7 @@ public class Juego extends InterfaceJuego {
 					destructor[i].disparar(entorno);
 					
 					if ((destructor[i].disparoDestructor() - astromegaship.y < 20 && destructor[i].disparoDestructor() - astromegaship.y > -20) &&
-							destructor[i].disparoDestructorX() - astromegaship.x < 100 && destructor[i].disparoDestructorX() - astromegaship.x > -100) {
+							destructor[i].disparoDestructorX() - astromegaship.x < 50 && destructor[i].disparoDestructorX() - astromegaship.x > -50) {
 						System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
 					}
 					if (destructor[i].colision) {
