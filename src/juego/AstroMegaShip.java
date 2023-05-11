@@ -43,7 +43,6 @@ public class AstroMegaShip {
 		public void disparo(Entorno entorno) {
 			entorno.dibujarImagen(bullet, this.x, this.by, 0,0.2);
 			this.disparar=true;
-			System.out.println("disparo");
 		}
 		public void avanzarDisparo() {
 				this.by-=17;				

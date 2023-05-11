@@ -15,6 +15,8 @@ public class Juego extends InterfaceJuego {
 	private AstroMegaShip astromegaship;
 	Image imgFondo;
 	boolean bala=false;
+	boolean balaenemigo=false;
+	public final char TECLA_ESC = 27;
 	
 
 	// Variables y métodos propios de cada grupo
@@ -87,15 +89,24 @@ public class Juego extends InterfaceJuego {
 			{
 				{
 					asteroid[i].avanzar(astromegaship);
+					if (asteroid[i].colision) {
+						System.exit(i);
+					}
 				}
 			}
 			for (int i=0;i<destructor.length;i++)
 			{
 				{
 					destructor[i].avanzar(astromegaship);
+					destructor[i].disparar(entorno);
+					if (destructor[i].colision) {
+						System.exit(i);
+					}
 				}
 			}
 		}
+
+		
 		astromegaship.dibujarse(entorno);
 		if (entorno.sePresiono(entorno.TECLA_ESPACIO)&& bala==false) {
 			bala=true;
@@ -110,6 +121,9 @@ public class Juego extends InterfaceJuego {
 				bala=false;
 				astromegaship.by=450;
 			}
+		}
+		if (entorno.sePresiono(TECLA_ESC)) {
+			System.exit(0);
 		}
 
 

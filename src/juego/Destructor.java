@@ -7,13 +7,15 @@ import entorno.Entorno;
 import entorno.Herramientas;
 
 public class Destructor {
-	private double x, y;
+	private double x, y , by;
 	private double diametro;
 	private double velocidad;
 	private double angulo; 
 	private boolean atrapada;
 	private int[] signo; 
 	Image img1;
+	Image bulletd;
+	boolean colision;
 	public Destructor() 
 	{
 		//this.x = x;
@@ -22,8 +24,10 @@ public class Destructor {
 		Random gen = new Random();
 		
 		this.x = gen.nextInt(800) + 1;
-		this.y = gen.nextInt(200) + 1;
+		this.y = gen.nextInt(100) + 1;
 		img1 = Herramientas.cargarImagen("destructor.png");
+		bulletd = Herramientas.cargarImagen("bulletd.png");
+		by=y;
 		
 		this.velocidad = gen.nextInt(3) + 1;
 		
@@ -35,6 +39,7 @@ public class Destructor {
 //		System.out.println(this.x+" "+this.y+" "+this.velocidad+" "+  this.angulo);
 //		System.exit(0);
 		this.atrapada=false;
+		this.colision=false;
 		
 	}
 
@@ -45,6 +50,13 @@ public class Destructor {
 		else 
 			entorno.dibujarImagen(img1,this.x, this.y, this.angulo,0.2);
 	
+	}
+	public void disparar(Entorno entorno) {
+		entorno.dibujarImagen(bulletd, this.x, this.by, 0,0.2);
+		this.by+=5;
+		if(this.by>600) {
+			this.by=this.y;
+		}
 	}
 
 	public void avanzar(AstroMegaShip astromegaship) 
@@ -65,8 +77,11 @@ public class Destructor {
 		   }
 		if (this.y > 630) {
 			this.y = 0;
+			if ((this.y > 424 && this.y <555) && (this.x - astromegaship.x) > -30 && (this.x - astromegaship.x) < 30);{
+				this.colision=true;
+				System.out.println("colision");
+			}
 		}
-		if ((this.y > 424 && this.y <555) && (this.x - astromegaship.x) > -30 && (this.x - astromegaship.x) < 30);
 	}
 
 	public double getY() 
