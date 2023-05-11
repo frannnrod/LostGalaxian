@@ -17,6 +17,7 @@ public class AstroMegaShip {
 		Image bullet;
 		boolean motor;
 		boolean disparar;
+		Destructor[] destructor;
 		
 		public AstroMegaShip(int x, int y) 
 		{
@@ -45,19 +46,38 @@ public class AstroMegaShip {
 			this.disparar=true;
 		}
 		public void avanzarDisparo() {
-				this.by-=17;				
+				this.by-=17;
+			
 		}
-		public void frenardisparo() {
+		public void frenardisparo(Destructor[] destructor, boolean bala) {
 			if (this.by<0){
-			disparar=false;
+				
+				by=450;
+				bala = false;
+				disparar=false;
+			
+				
+			}
+			for (int i= 0; i < destructor.length; i++) {
+				if (this.by == destructor[i].y) {
+				
+					by=450;
+				}
 			}
 		}
-		
+		public double posicionBalaY() {
+			
+			return this.by;
+		}
 
-
+		public double posicionBalaX() {
+			
+			return this.bx;
+		}
 		
 		public void moverDerecha() {
 			this.x += Math.cos(this.angulo)*5;
+			bx = this.x;
 			if(this.x > 810) {
 				this.x=800;
 			}
@@ -68,6 +88,7 @@ public class AstroMegaShip {
 		}
 		public void moverIzquierda() {
 			this.x -= Math.cos(this.angulo)*5;
+			bx = this.x;
 			if(this.x > 810) {
 				this.x=800;
 			}
