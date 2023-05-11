@@ -29,7 +29,7 @@ public class Juego extends InterfaceJuego {
 		imgFondo = Herramientas.cargarImagen("fondo.jpg");
 		astromegaship = new AstroMegaShip(400, 500);
 		this.asteroid = new Asteroid[6]; 
-		this.destructor = new Destructor[1];
+		this.destructor = new Destructor[6];
 		for(int i = 0; i<this.asteroid.length; i++) {
 			this.asteroid[i] = new Asteroid();
 		}
@@ -78,7 +78,7 @@ public class Juego extends InterfaceJuego {
 		}
 		for (int i=0;i<destructor.length;i++)
 		{
-			if (!destructor[i].getAtrapada())
+			if (destructor[i]!=null && !destructor[i].getAtrapada()  )
 			{
 			
 				destructor[i].dibujarse(entorno);
@@ -100,16 +100,19 @@ public class Juego extends InterfaceJuego {
 			for (int i=0;i<destructor.length;i++)
 			{
 				{
-					destructor[i].avanzar(astromegaship);
-					destructor[i].disparar(entorno);
+					if (destructor[i]!=null) {
+						destructor[i].avanzar(astromegaship);
+						destructor[i].disparar(entorno);
+						
+						if ((destructor[i].disparoDestructor() - astromegaship.y < 20 && destructor[i].disparoDestructor() - astromegaship.y > -20) &&
+								destructor[i].disparoDestructorX() - astromegaship.x < 50 && destructor[i].disparoDestructorX() - astromegaship.x > -50) {
+							System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
+						}
+						if (destructor[i].colision) {
+							System.exit(i);
+						}
+					}
 					
-					if ((destructor[i].disparoDestructor() - astromegaship.y < 20 && destructor[i].disparoDestructor() - astromegaship.y > -20) &&
-							destructor[i].disparoDestructorX() - astromegaship.x < 50 && destructor[i].disparoDestructorX() - astromegaship.x > -50) {
-						System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
-					}
-					if (destructor[i].colision) {
-						System.exit(i);
-					}
 				}
 			}
 		}
@@ -126,14 +129,18 @@ public class Juego extends InterfaceJuego {
 				astromegaship.disparo(entorno);
 				
 				for (int i= 0; i < destructor.length; i++) {
-					
-					if ((astromegaship.posicionBalaY() - destructor[i].y < 33 && astromegaship.posicionBalaY() - destructor[i].y > -33) && 
-					(astromegaship.posicionBalaX() - destructor[i].x < 100 && astromegaship.posicionBalaX() - destructor[i].x > -100 )) {
-						System.out.println("COLISION DE BALAS PERRAS LE DIO A LA NAVE");
-						destructor[i] = null;
-						
+					if (destructor[i]!=null) {
+						if ((astromegaship.posicionBalaY() - destructor[i].y < 33 && astromegaship.posicionBalaY() - destructor[i].y > -33) && 
+								(astromegaship.posicionBalaX() - destructor[i].x < 100 && astromegaship.posicionBalaX() - destructor[i].x > -100 )) {
+									System.out.println("COLISION DE BALAS PERRAS LE DIO A LA NAVE");
+									
+									destructor[i] = null;
+									bala= false;
+									
+								}
+							}
 					}
-				}
+					
 			}
 			else {
 				

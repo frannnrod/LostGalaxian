@@ -49,6 +49,7 @@ public class Destructor {
 
 	public void dibujarse(Entorno entorno) 
 	{
+		if (entorno== null) return;
 		if (this.y < 600)
 		entorno.dibujarImagen(img1,this.x, this.y, this.angulo,0.2);
 		else 

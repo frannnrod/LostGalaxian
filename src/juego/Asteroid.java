@@ -44,6 +44,7 @@ public class Asteroid {
 
 		public void dibujarse(Entorno entorno) 
 		{
+			
 			if (this.y < 600)
 			entorno.dibujarImagen(img1,this.x, this.y, this.angulo,0.8);
 			else 
