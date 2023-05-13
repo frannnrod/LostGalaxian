@@ -15,10 +15,16 @@ public class Juego extends InterfaceJuego {
 	Destructor[] destructor;
 	private AstroMegaShip astromegaship;
 	Image imgFondo;
+	Image vida;
+	Image vidaMuerto;
 	boolean bala=false;
 	boolean balaenemigo=false;
 	public final char TECLA_ESC = 27;
 	int navesDestruidas = 0;
+	boolean [] vidas = {true,true,true};
+	boolean dioDisparo = false;
+	int vidasTotal = 4;
+	boolean colisionDetectada = false;
 
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -27,7 +33,8 @@ public class Juego extends InterfaceJuego {
 		// Inicializa el objeto entorno
 		
 		this.entorno = new Entorno(this, "Lost Galaxian - Grupo 3 - v1", 800, 600);
-		
+		vida = Herramientas.cargarImagen("life.png");
+		vidaMuerto = Herramientas.cargarImagen("lifeDead.png");
 		imgFondo = Herramientas.cargarImagen("fondo.jpg");
 		astromegaship = new AstroMegaShip(400, 500);
 		this.asteroid = new Asteroid[6]; 
@@ -53,9 +60,28 @@ public class Juego extends InterfaceJuego {
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
-	
-	
+		
+		
 		entorno.dibujarImagen(imgFondo, 400, 300, 0);
+		for (int i = 0; i<vidas.length;i++) {
+			if (vidas[i]) {
+				entorno.dibujarImagen(vida, 600 + (i * 50), 30, 0);
+				if (dioDisparo) {
+					System.out.println("estoy aca");
+				 entorno.dibujarImagen(vidaMuerto, 600 + (i * 50), 30, 0);
+				}
+			}
+			else {
+				 entorno.dibujarImagen(vidaMuerto, 600 + (i * 50), 30, 0);
+
+			}
+			
+		}
+		 
+		if (vidas[0]== false) {
+			System.out.println("PERDISTE PETE");
+			System.exit(0);
+		}
 		entorno.cambiarFont(null, 20, Color.white);
 		entorno.escribirTexto("Puntuacion: " + navesDestruidas  , 10, 20);
 		if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
@@ -77,7 +103,7 @@ public class Juego extends InterfaceJuego {
 			
 		for (int i=0;i<asteroid.length;i++)
 		{
-			if (!asteroid[i].getAtrapada())
+			if (asteroid[i]!=null && !asteroid[i].getAtrapada())
 			{
 				asteroid[i].dibujarse(entorno);
 			}		
@@ -99,11 +125,25 @@ public class Juego extends InterfaceJuego {
 			for (int i=0;i<asteroid.length;i++)
 			{
 				{
-					asteroid[i].avanzar(astromegaship);
-					if (asteroid[i].colision) {
-					}
+					if (asteroid[i]!=null) {
+						asteroid[i].avanzar(astromegaship);
+						if (!colisionDetectada && asteroid[i].colision) {
+							System.out.println("COLISION");
+							 vidasTotal--;
+							 vidas[vidasTotal - 1] = false;
+							 asteroid[i] = null;
+							
+						}    
+  					}
+					
+					
 				}
+				
+				
 			}
+			
+			
+			dioDisparo = false;
 			for (int i=0;i<destructor.length;i++)
 			{
 				{
@@ -113,11 +153,16 @@ public class Juego extends InterfaceJuego {
 						
 						if ((destructor[i].disparoDestructor() - astromegaship.y < 20 && destructor[i].disparoDestructor() - astromegaship.y > -20) &&
 								destructor[i].disparoDestructorX() - astromegaship.x < 50 && destructor[i].disparoDestructorX() - astromegaship.x > -50) {
-							
+							vidasTotal--;
+							 vidas[vidasTotal - 1] = false;
 							System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
+							destructor[i].by = destructor[i].y;
+							destructor[i].bx = destructor[i].x;
+							//dioDisparo = true;
 						}
 						if (destructor[i].colision) {
 						}
+						//dioDisparo= false;
 					}
 					
 				}

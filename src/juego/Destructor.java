@@ -9,8 +9,8 @@ import entorno.Herramientas;
 public class Destructor {
 	 double x;
 	double y;
-	private double by;
-	private double bx;
+	 double by;
+	 double bx;
 	private double diametro;
 	private double velocidad;
 	private double angulo; 
