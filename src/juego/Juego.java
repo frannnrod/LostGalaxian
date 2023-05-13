@@ -1,6 +1,7 @@
  package juego;
 
 
+import java.awt.Color;
 import java.awt.Image;
 
 import entorno.Entorno;
@@ -17,13 +18,14 @@ public class Juego extends InterfaceJuego {
 	boolean bala=false;
 	boolean balaenemigo=false;
 	public final char TECLA_ESC = 27;
-	
+	int navesDestruidas = 0;
 
 	// Variables y métodos propios de cada grupo
 	// ...
 
 	Juego() {
 		// Inicializa el objeto entorno
+		
 		this.entorno = new Entorno(this, "Lost Galaxian - Grupo 3 - v1", 800, 600);
 		
 		imgFondo = Herramientas.cargarImagen("fondo.jpg");
@@ -51,7 +53,11 @@ public class Juego extends InterfaceJuego {
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
+	
+	
 		entorno.dibujarImagen(imgFondo, 400, 300, 0);
+		entorno.cambiarFont(null, 20, Color.white);
+		entorno.escribirTexto("Puntuacion: " + navesDestruidas  , 10, 20);
 		if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			astromegaship.moverDerecha();
 			astromegaship.prenderMotor();
@@ -78,7 +84,9 @@ public class Juego extends InterfaceJuego {
 		}
 		for (int i=0;i<destructor.length;i++)
 		{
+			
 			if (destructor[i]!=null && !destructor[i].getAtrapada()  )
+				
 			{
 			
 				destructor[i].dibujarse(entorno);
@@ -105,6 +113,7 @@ public class Juego extends InterfaceJuego {
 						
 						if ((destructor[i].disparoDestructor() - astromegaship.y < 20 && destructor[i].disparoDestructor() - astromegaship.y > -20) &&
 								destructor[i].disparoDestructorX() - astromegaship.x < 50 && destructor[i].disparoDestructorX() - astromegaship.x > -50) {
+							
 							System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
 						}
 						if (destructor[i].colision) {
@@ -128,12 +137,14 @@ public class Juego extends InterfaceJuego {
 				
 				for (int i= 0; i < destructor.length; i++) {
 					if (destructor[i]!=null) {
+						
 						if ((astromegaship.posicionBalaY() - destructor[i].y < 33 && astromegaship.posicionBalaY() - destructor[i].y > -33) && 
 								(astromegaship.posicionBalaX() - destructor[i].x < 100 && astromegaship.posicionBalaX() - destructor[i].x > -100 )) {
-									System.out.println("COLISION DE BALAS PERRAS LE DIO A LA NAVE");
 									
-									destructor[i] = null;
+									navesDestruidas++;
 									bala= false;
+									destructor[i] = null;
+									astromegaship.by=450;
 									
 								}
 							}
