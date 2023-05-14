@@ -2,7 +2,11 @@
 
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Image;
+import java.io.IOException;
+import java.io.InputStream;
 
 import entorno.Entorno;
 import entorno.Herramientas;
@@ -33,9 +37,11 @@ public class Juego extends InterfaceJuego {
 		// Inicializa el objeto entorno
 		
 		this.entorno = new Entorno(this, "Lost Galaxian - Grupo 3 - v1", 800, 600);
-		vida = Herramientas.cargarImagen("life.png");
-		vidaMuerto = Herramientas.cargarImagen("lifeDead.png");
+		vida = Herramientas.cargarImagen("heart.png");
+		vidaMuerto = Herramientas.cargarImagen("heart0.png");
 		imgFondo = Herramientas.cargarImagen("fondo.jpg");
+
+
 		astromegaship = new AstroMegaShip(400, 500);
 		this.asteroid = new Asteroid[6]; 
 		this.destructor = new Destructor[6];
@@ -65,14 +71,14 @@ public class Juego extends InterfaceJuego {
 		entorno.dibujarImagen(imgFondo, 400, 300, 0);
 		for (int i = 0; i<vidas.length;i++) {
 			if (vidas[i]) {
-				entorno.dibujarImagen(vida, 600 + (i * 50), 30, 0);
+				entorno.dibujarImagen(vida, 25 + (i * 50), 25, 0,0.15);
 				if (dioDisparo) {
 					System.out.println("estoy aca");
-				 entorno.dibujarImagen(vidaMuerto, 600 + (i * 50), 30, 0);
+				 entorno.dibujarImagen(vidaMuerto, 25 + (i * 50), 25, 0,0.15);
 				}
 			}
 			else {
-				 entorno.dibujarImagen(vidaMuerto, 600 + (i * 50), 30, 0);
+				 entorno.dibujarImagen(vidaMuerto, 25 + (i * 50), 25, 0, 0.15);
 
 			}
 			
@@ -82,8 +88,8 @@ public class Juego extends InterfaceJuego {
 			System.out.println("PERDISTE PETE");
 			System.exit(0);
 		}
-		entorno.cambiarFont(null, 20, Color.white);
-		entorno.escribirTexto("Puntuacion: " + navesDestruidas  , 10, 20);
+		entorno.cambiarFont("SPACEMAN", 20, Color.black);
+		entorno.escribirTexto("SCORE:" + navesDestruidas  ,astromegaship.x-60, 570);
 		if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			astromegaship.moverDerecha();
 			astromegaship.prenderMotor();
