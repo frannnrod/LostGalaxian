@@ -19,6 +19,7 @@ public class AstroMegaShip {
 		boolean disparar;
 		Destructor[] destructor;
 		
+		
 		public AstroMegaShip(int x, int y) 
 		{
 			this.x = x;

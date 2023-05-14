@@ -15,7 +15,9 @@ public class Juego extends InterfaceJuego {
 	Asteroid[] asteroid;
 	Destructor[] destructor;
 	private AstroMegaShip astromegaship;
+	Image staticFondo;
 	Image imgFondo;
+	Image loopFondo;
 	Image vida;
 	Image vidaMuerto;
 	boolean bala=false;
@@ -26,6 +28,8 @@ public class Juego extends InterfaceJuego {
 	boolean dioDisparo = false;
 	int vidasTotal = 4;
 	boolean colisionDetectada = false;
+	double fondoy = 300;
+	double fondoy2= 900;
 
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -36,7 +40,9 @@ public class Juego extends InterfaceJuego {
 		this.entorno = new Entorno(this, "Lost Galaxian - Grupo 3 - v1", 800, 600);
 		vida = Herramientas.cargarImagen("heart.png");
 		vidaMuerto = Herramientas.cargarImagen("heart0.png");
-		imgFondo = Herramientas.cargarImagen("fondo.jpg");
+		imgFondo = Herramientas.cargarImagen("fondo.png");
+		loopFondo = Herramientas.cargarImagen("fondoloop.png");
+		staticFondo = Herramientas.cargarImagen("fondoStatic.jpg");
 
 
 		astromegaship = new AstroMegaShip(400, 500);
@@ -64,8 +70,25 @@ public class Juego extends InterfaceJuego {
 	 */
 	public void tick() {
 		
+		entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
+		fondoy2-=1;
+		entorno.dibujarImagen(imgFondo, 400, fondoy, 0);
+		fondoy-=1;
+		if (fondoy2==-300) {
+			fondoy2=900;
+		}
+		if (fondoy2==300) {
+			fondoy2=300;
+		}
+		if (fondoy==300) {
+			fondoy=300;
+		}
+		if (fondoy==-300) {
+			fondoy=900;
+		}
 		
-		entorno.dibujarImagen(imgFondo, 400, 300, 0);
+
+
 		for (int i = 0; i<vidas.length;i++) {
 			if (vidas[i]) {
 				entorno.dibujarImagen(vida, 25 + (i * 50), 25, 0,0.15);
@@ -125,6 +148,7 @@ public class Juego extends InterfaceJuego {
 		}
 		if (!entorno.estaPresionada('P'))
 		{
+
 			for (int i=0;i<asteroid.length;i++)
 			{
 				{
