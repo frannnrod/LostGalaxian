@@ -15,7 +15,6 @@ public class Juego extends InterfaceJuego {
 	Asteroid[] asteroid;
 	Destructor[] destructor;
 	private AstroMegaShip astromegaship;
-	Image staticFondo;
 	Image imgFondo;
 	Image loopFondo;
 	Image vida;
@@ -42,12 +41,11 @@ public class Juego extends InterfaceJuego {
 		vidaMuerto = Herramientas.cargarImagen("heart0.png");
 		imgFondo = Herramientas.cargarImagen("fondo.png");
 		loopFondo = Herramientas.cargarImagen("fondoloop.png");
-		staticFondo = Herramientas.cargarImagen("fondoStatic.jpg");
 
 
 		astromegaship = new AstroMegaShip(400, 500);
-		this.asteroid = new Asteroid[6]; 
-		this.destructor = new Destructor[6];
+		this.asteroid = new Asteroid[1]; 
+		this.destructor = new Destructor[1];
 		for(int i = 0; i<this.asteroid.length; i++) {
 			this.asteroid[i] = new Asteroid();
 		}
@@ -108,7 +106,7 @@ public class Juego extends InterfaceJuego {
 			System.out.println("PERDISTE PETE");
 			System.exit(0);
 		}
-		entorno.cambiarFont("SPACEMAN", 20, Color.black);
+		entorno.cambiarFont("SPACEMAN", 20, Color.white);
 		entorno.escribirTexto("SCORE:" + navesDestruidas  ,astromegaship.x-60, 570);
 		if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			astromegaship.moverDerecha();
