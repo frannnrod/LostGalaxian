@@ -33,7 +33,7 @@ public class Destructor {
 		bulletd = Herramientas.cargarImagen("bulletd.png");
 		by=y;
 		bx =x;
-		this.velocidad = gen.nextInt(3) + 1;
+		this.velocidad = gen.nextInt(2) + 1;
 		
 		this.signo = new int[2];
 		this.signo[0] = -1;

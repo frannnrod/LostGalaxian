@@ -19,6 +19,9 @@ public class Juego extends InterfaceJuego {
 	Image loopFondo;
 	Image vida;
 	Image vidaMuerto;
+	Image explosion;
+	Image fin;
+	boolean juego = true;
 	boolean bala=false;
 	boolean balaenemigo=false;
 	public final char TECLA_ESC = 27;
@@ -29,6 +32,8 @@ public class Juego extends InterfaceJuego {
 	boolean colisionDetectada = false;
 	double fondoy = 300;
 	double fondoy2= 900;
+	double explosionx;
+	double explosiony;
 
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -41,22 +46,26 @@ public class Juego extends InterfaceJuego {
 		vidaMuerto = Herramientas.cargarImagen("heart0.png");
 		imgFondo = Herramientas.cargarImagen("fondo.png");
 		loopFondo = Herramientas.cargarImagen("fondoloop.png");
-
-
-		astromegaship = new AstroMegaShip(400, 500);
-		this.asteroid = new Asteroid[1]; 
-		this.destructor = new Destructor[1];
-		for(int i = 0; i<this.asteroid.length; i++) {
-			this.asteroid[i] = new Asteroid();
-		}
-		for(int i = 0; i<this.destructor.length; i++) {
-			this.destructor[i] = new Destructor();
-		}
+		explosion = Herramientas.cargarImagen("explo.png");
+		fin = Herramientas.cargarImagen("fin.gif");
 		
-		// Inicializar lo que haga falta para el juego
-		// ...
-
-		// Inicia el juego!
+		if (juego==true) 
+		{
+			astromegaship = new AstroMegaShip(400, 500);
+			this.asteroid = new Asteroid[4]; 
+			this.destructor = new Destructor[6];
+			for(int i = 0; i<this.asteroid.length; i++) {
+				this.asteroid[i] = new Asteroid();
+			}
+			for(int i = 0; i<this.destructor.length; i++) {
+				this.destructor[i] = new Destructor();
+			}
+			
+			// Inicializar lo que haga falta para el juego
+			// ...
+	
+			// Inicia el juego!
+		}
 		this.entorno.iniciar();
 	}
 
@@ -69,22 +78,8 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 		
 		entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
-		fondoy2-=1;
-		entorno.dibujarImagen(imgFondo, 400, fondoy, 0);
-		fondoy-=1;
-		if (fondoy2==-300) {
-			fondoy2=900;
-		}
-		if (fondoy2==300) {
-			fondoy2=300;
-		}
-		if (fondoy==300) {
-			fondoy=300;
-		}
-		if (fondoy==-300) {
-			fondoy=900;
-		}
 		
+		entorno.dibujarImagen(imgFondo, 400, fondoy, 0);
 
 
 		for (int i = 0; i<vidas.length;i++) {
@@ -103,49 +98,90 @@ public class Juego extends InterfaceJuego {
 		}
 		 
 		if (vidas[0]== false) {
-			System.out.println("PERDISTE PETE");
-			System.exit(0);
+			entorno.dibujarImagen(fin, 400, 300, 0);
+			entorno.cambiarFont("8-bit Arcade Out", 90, Color.magenta);
+			entorno.escribirTexto("PERDISTE",240,200);
+			entorno.cambiarFont("8-bit Arcade In", 90, Color.white);
+			entorno.escribirTexto("PERDISTE",240,200);
+			entorno.cambiarFont("8-bit Arcade Out", 50, Color.magenta);
+			entorno.escribirTexto("VOLVER A JUGAR",240,400);
+			entorno.cambiarFont("8-bit Arcade In", 50, Color.white);
+			entorno.escribirTexto("VOLVER A JUGAR",240,400);
+			entorno.cambiarFont("8-bit Arcade Out", 40, Color.magenta);
+			entorno.escribirTexto("APRIETE R",325,425);
+			entorno.cambiarFont("8-bit Arcade In", 40, Color.white);
+			entorno.escribirTexto("APRIETE R",325,425);
+			entorno.cambiarFont("8-bit Arcade Out", 55, Color.magenta);
+			entorno.escribirTexto("ESC PARA SALIR",230,570);
+			entorno.cambiarFont("8-bit Arcade In", 55, Color.white);
+			entorno.escribirTexto("ESC PARA SALIR",230,570);
+			juego=false;
 		}
-		entorno.cambiarFont("SPACEMAN", 20, Color.white);
-		entorno.escribirTexto("SCORE:" + navesDestruidas  ,astromegaship.x-60, 570);
-		if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
-			astromegaship.moverDerecha();
-			astromegaship.prenderMotor();
+		
+		if (juego==false && entorno.estaPresionada('R')) {
+			juego=true;
 		}
-		else {
-			astromegaship.apagarMotor();
-			
-	        }
-		if(entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
-			astromegaship.moverIzquierda();
-			astromegaship.prenderMotor();
+		if (juego==false) {
+			astromegaship=null;
+			asteroid=null;
+			destructor=null;
 		}
-		else {
-			astromegaship.apagarMotor();
-			
-	        }	
-			
-		for (int i=0;i<asteroid.length;i++)
+
+		if (!entorno.estaPresionada('P') && juego==true)
 		{
-			if (asteroid[i]!=null && !asteroid[i].getAtrapada())
-			{
-				asteroid[i].dibujarse(entorno);
-			}		
-		}
-		for (int i=0;i<destructor.length;i++)
-		{
-			
-			if (destructor[i]!=null && !destructor[i].getAtrapada()  )
+			if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+				astromegaship.moverDerecha();
+				astromegaship.prenderMotor();
+			}
+			else {
+				astromegaship.apagarMotor();
 				
-			{
-			
-				destructor[i].dibujarse(entorno);
-			
+			}
+			if(entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+				astromegaship.moverIzquierda();
+				astromegaship.prenderMotor();
+			}
+			else {
+				astromegaship.apagarMotor();
 				
-			}		
-		}
-		if (!entorno.estaPresionada('P'))
-		{
+			}	
+			
+			for (int i=0;i<asteroid.length;i++)
+			{
+				if (asteroid[i]!=null && !asteroid[i].getAtrapada())
+				{
+					asteroid[i].dibujarse(entorno);
+				}		
+			}
+			for (int i=0;i<destructor.length;i++)
+			{
+				
+				if (destructor[i]!=null && !destructor[i].getAtrapada()  )
+					
+				{
+					
+					destructor[i].dibujarse(entorno);
+					
+					
+				}		
+			}
+			fondoy2-=1;
+			fondoy-=1;
+			if (fondoy2==-300) {
+				fondoy2=900;
+			}
+			if (fondoy2==300) {
+				fondoy2=300;
+			}
+			if (fondoy==300) {
+				fondoy=300;
+			}
+			if (fondoy==-300) {
+				fondoy=900;
+			}
+			
+			entorno.cambiarFont("SPACEMAN", 20, Color.white);
+			entorno.escribirTexto("SCORE:" + navesDestruidas  ,astromegaship.x-60, 570);
 
 			for (int i=0;i<asteroid.length;i++)
 			{
@@ -192,41 +228,45 @@ public class Juego extends InterfaceJuego {
 					
 				}
 			}
+			astromegaship.dibujarse(entorno);
+			if (entorno.sePresiono(entorno.TECLA_ESPACIO)&& bala==false) {
+				bala=true;
+				astromegaship.disparo(entorno);
+			}
+			
+			if (bala) {
+				if(astromegaship.by>0) {
+					astromegaship.avanzarDisparo();
+					astromegaship.disparo(entorno);
+					
+					for (int i= 0; i < destructor.length; i++) {
+						if (destructor[i]!=null) {
+							
+							if ((astromegaship.posicionBalaY() - destructor[i].y < 33 && astromegaship.posicionBalaY() - destructor[i].y > -33) && 
+									(astromegaship.posicionBalaX() - destructor[i].x < 100 && astromegaship.posicionBalaX() - destructor[i].x > -100 )) {
+								
+								navesDestruidas++;
+								explosionx=destructor[i].x;
+								explosiony=destructor[i].y;
+								bala= false;
+								destructor[i] = null;
+								entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
+								astromegaship.by=450;
+								
+							}
+						}
+					}
+					
+				}
+				else {
+					bala=false;
+					astromegaship.by=450;
+				}
+			}
+			
 		}
 
 		
-		astromegaship.dibujarse(entorno);
-		if (entorno.sePresiono(entorno.TECLA_ESPACIO)&& bala==false) {
-			bala=true;
-			astromegaship.disparo(entorno);
-		}
-		if (bala) {
-			if(astromegaship.by>0) {
-				astromegaship.avanzarDisparo();
-				astromegaship.disparo(entorno);
-				
-				for (int i= 0; i < destructor.length; i++) {
-					if (destructor[i]!=null) {
-						
-						if ((astromegaship.posicionBalaY() - destructor[i].y < 33 && astromegaship.posicionBalaY() - destructor[i].y > -33) && 
-								(astromegaship.posicionBalaX() - destructor[i].x < 100 && astromegaship.posicionBalaX() - destructor[i].x > -100 )) {
-									
-									navesDestruidas++;
-									bala= false;
-									destructor[i] = null;
-									astromegaship.by=450;
-									
-								}
-							}
-					}
-					
-			}
-			else {
-				
-				bala=false;
-				astromegaship.by=450;
-			}
-		}
 		if (entorno.sePresiono(TECLA_ESC)) {
 			System.exit(0);
 		}
