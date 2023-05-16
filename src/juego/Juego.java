@@ -125,6 +125,7 @@ public class Juego extends InterfaceJuego {
 			 vidas[1] = true;
 			 vidas[2] = true;
 			 vidasTotal = 4;
+			 navesDestruidas = 0;
 			juego=true;
 			entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
 			
