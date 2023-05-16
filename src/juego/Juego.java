@@ -27,14 +27,14 @@ public class Juego extends InterfaceJuego {
 	public final char TECLA_ESC = 27;
 	int navesDestruidas = 0;
 	boolean [] vidas = {true,true,true};
-	boolean dioDisparo = false;
+	
 	int vidasTotal = 4;
 	boolean colisionDetectada = false;
 	double fondoy = 300;
 	double fondoy2= 900;
 	double explosionx;
 	double explosiony;
-
+	boolean dioDisparo = false;
 	// Variables y métodos propios de cada grupo
 	// ...
 
@@ -118,8 +118,40 @@ public class Juego extends InterfaceJuego {
 			juego=false;
 		}
 		
-		if (juego==false && entorno.estaPresionada('R')) {
+		if (juego==false && entorno.estaPresionada('R')) { 
+			//SI EL USUARIO DESEA VOLVER A JUGAR, VOLVEMOS A DIBUJAR LAS IMAGENES INICIALES Y REESTABLECEMOS LAS VARIABLES PRINCIPALES COMO SERIAN LAS VIDAS
+			 vidas[0] = true;
+			 vidas[1] = true;
+			 vidas[2] = true;
+			 vidasTotal = 4;
 			juego=true;
+			entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
+			
+			entorno.dibujarImagen(imgFondo, 400, fondoy, 0);
+			for (int i = 0; i<vidas.length;i++) {
+				if (vidas[i]) {
+					entorno.dibujarImagen(vida, 25 + (i * 50), 25, 0,0.15);
+					if (dioDisparo) {
+						System.out.println("estoy aca");
+					 entorno.dibujarImagen(vidaMuerto, 25 + (i * 50), 25, 0,0.15);
+					}
+				}
+				else {
+					 entorno.dibujarImagen(vidaMuerto, 25 + (i * 50), 25, 0, 0.15);
+
+				}
+				
+			}
+			astromegaship = new AstroMegaShip(400, 500);
+			this.asteroid = new Asteroid[4]; 
+			this.destructor = new Destructor[6];
+			for(int i = 0; i<this.asteroid.length; i++) {
+				this.asteroid[i] = new Asteroid();
+			}
+			for(int i = 0; i<this.destructor.length; i++) {
+				this.destructor[i] = new Destructor();
+			}
+			
 		}
 		if (juego==false) {
 			astromegaship=null;
