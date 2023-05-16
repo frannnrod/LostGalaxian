@@ -35,6 +35,8 @@ public class Juego extends InterfaceJuego {
 	double explosionx;
 	double explosiony;
 	boolean dioDisparo = false;
+	int rondas = 0;
+	int temporizador = 1;
 	// Variables y métodos propios de cada grupo
 	// ...
 
@@ -186,6 +188,7 @@ public class Juego extends InterfaceJuego {
 					asteroid[i].dibujarse(entorno);
 				}		
 			}
+		
 			for (int i=0;i<destructor.length;i++)
 			{
 				
@@ -304,7 +307,23 @@ public class Juego extends InterfaceJuego {
 								destructor[i] = null;
 								entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
 								astromegaship.by=450;
-								
+								System.out.println(destructor.length);
+								if (navesDestruidas == destructor.length) { //UNA VEZ QUE MUEREN LOS DESTRUCTORES APARECEN MAS (¿SISTEMAS DE RONDAS?)
+									
+										navesDestruidas=0;
+										this.destructor = new Destructor[6];
+										
+										for(int i1 = 0; i1<this.destructor.length; i1++) {
+											this.destructor[i1] = new Destructor();
+											
+										
+										
+											
+									}
+									
+									
+										
+								}
 							}
 						}
 					}
