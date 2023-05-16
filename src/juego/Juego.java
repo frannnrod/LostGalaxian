@@ -53,7 +53,7 @@ public class Juego extends InterfaceJuego {
 		{
 			astromegaship = new AstroMegaShip(400, 500);
 			this.asteroid = new Asteroid[4]; 
-			this.destructor = new Destructor[6];
+			this.destructor = new Destructor[4];
 			for(int i = 0; i<this.asteroid.length; i++) {
 				this.asteroid[i] = new Asteroid();
 			}
@@ -82,7 +82,7 @@ public class Juego extends InterfaceJuego {
 		entorno.dibujarImagen(imgFondo, 400, fondoy, 0);
 
 
-		for (int i = 0; i<vidas.length;i++) {
+		for (int i = 0; i<vidas.length;i++) { //DIBUJAR LOS CORAZONES QUE REPRESENTAN LAS VIDAS
 			if (vidas[i]) {
 				entorno.dibujarImagen(vida, 25 + (i * 50), 25, 0,0.15);
 				if (dioDisparo) {
@@ -98,6 +98,7 @@ public class Juego extends InterfaceJuego {
 		}
 		 
 		if (vidas[0]== false) {
+			//PANTALLA DE FIN UNA VEZ QUE PERDIMOS
 			entorno.dibujarImagen(fin, 400, 300, 0);
 			entorno.cambiarFont("8-bit Arcade Out", 90, Color.magenta);
 			entorno.escribirTexto("PERDISTE",240,200);
@@ -153,13 +154,13 @@ public class Juego extends InterfaceJuego {
 			}
 			
 		}
-		if (juego==false) {
+		if (juego==false) { //EN CASO DE QUE PERDAMOS, DESAPARECEMOS LOS OBJETOS.
 			astromegaship=null;
 			asteroid=null;
 			destructor=null;
 		}
 
-		if (!entorno.estaPresionada('P') && juego==true)
+		if (!entorno.estaPresionada('P') && juego==true) 
 		{
 			if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 				astromegaship.moverDerecha();
@@ -244,6 +245,23 @@ public class Juego extends InterfaceJuego {
 						destructor[i].avanzar(astromegaship);
 						destructor[i].disparar(entorno);
 						
+						
+						for (int j=0;j<asteroid.length;j++) { //LOGICA CUANDO HAY UNA COLISION ENTRE ASTEROIDE Y DESTRUCTOR
+							if (asteroid[j] !=null) {
+								if ((destructor[i].x - asteroid[j].x < 80 && destructor[i].x - asteroid[j].x >-80) 
+										&& (destructor[i].y - asteroid[j].y < 80 && destructor[i].y - asteroid[j].y >-80) 
+										) {
+									
+									destructor[i].angulo = Math.PI - destructor[i].angulo;
+									
+									asteroid[j].angulo = Math.PI - asteroid[j].angulo;
+									asteroid[j].x+= 1*0.7;
+									asteroid[j].y+= 1*0.7;
+								}
+							}
+							
+						}
+						
 						if ((destructor[i].disparoDestructor() - astromegaship.y < 20 && destructor[i].disparoDestructor() - astromegaship.y > -20) &&
 								destructor[i].disparoDestructorX() - astromegaship.x < 50 && destructor[i].disparoDestructorX() - astromegaship.x > -50) {
 							vidasTotal--;
@@ -255,6 +273,8 @@ public class Juego extends InterfaceJuego {
 						}
 						if (destructor[i].colision) {
 						}
+						
+						
 						//dioDisparo= false;
 					}
 					

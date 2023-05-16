@@ -13,7 +13,7 @@ public class Destructor {
 	 double bx;
 	private double diametro;
 	private double velocidad;
-	private double angulo; 
+	 double angulo; 
 	private boolean atrapada;
 	private int[] signo; 
 	Image img1;
