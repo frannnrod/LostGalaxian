@@ -17,10 +17,10 @@ public class Juego extends InterfaceJuego {
 	private AstroMegaShip astromegaship;
 	bulletDestructor [] bulletsdestructor;
 	bulletAstroMegaShip bulletsastromegaship;
-	Image imgFondo,loopFondo, vida, vidaMuerto, explosion, fin;
+	Image imgFondo,loopFondo, vida, vidaMuerto, explosion, fin, fondoMenu;
 
 	boolean juego = true;
-	boolean bala, balaenemigo, colisionDetectada, dioDisparo = false;
+	boolean bala, balaenemigo, colisionDetectada, dioDisparo, cargarMenu = false;
 
 	public final char TECLA_ESC = 27;
 	int navesDestruidas = 0;
@@ -36,6 +36,7 @@ public class Juego extends InterfaceJuego {
 	double explosiony;
 	int temp = 0;
 	int rondas = 0 ;
+	int contMenu = 0;
 	int random;
 	double ultimodx;
 	double ultimody;
@@ -54,6 +55,7 @@ public class Juego extends InterfaceJuego {
 		loopFondo = Herramientas.cargarImagen("fondoloop.png");
 		explosion = Herramientas.cargarImagen("explo.png");
 		fin = Herramientas.cargarImagen("fin.gif");
+		fondoMenu = Herramientas.cargarImagen("fondoMenu.gif");
 		
 		if (juego==true) 
 		{
@@ -94,6 +96,29 @@ public class Juego extends InterfaceJuego {
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
+		if (!cargarMenu) {
+			iniciarMenu();
+		}
+	}
+	public void iniciarMenu() {
+		if(entorno.sePresiono(entorno.TECLA_ENTER)) {
+			cargarMenu = true;
+			return;
+		}
+		else {
+			Menu.principal(entorno,fondoMenu,contMenu);
+			if (entorno.sePresiono(entorno.TECLA_DERECHA )&& contMenu<2) {
+				contMenu++;
+				}
+			}
+			if (entorno.sePresiono(entorno.TECLA_IZQUIERDA ) && contMenu>0) {
+				contMenu--;
+			}
+		
+	}
+		
+		
+	public void inicioJuego() {	
 		temp++;
 		entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
 		
