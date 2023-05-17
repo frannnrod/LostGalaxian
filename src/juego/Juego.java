@@ -192,11 +192,43 @@ public class Juego extends InterfaceJuego {
 			astromegaship = new AstroMegaShip(400, 500);
 			this.asteroid = new Asteroid[4]; 
 			this.destructor = new Destructor[6];
-			for(int i = 0; i<this.asteroid.length; i++) {
-				this.asteroid[i] = new Asteroid();
-			}
-			for(int i = 0; i<this.destructor.length; i++) {
-				this.destructor[i] = new Destructor();
+			temp = 0;
+			cantAst= 0;
+			cantDest=0;
+			if (temp % 60 == 0) {
+				if (cantAst<4 && gen.nextInt(2) == 1) {
+					for (int i=0;i<asteroid.length;i++) {
+						if (this.asteroid[i] == null) {
+							this.asteroid[i] = new Asteroid();	
+							cantAst+=1;
+							break;
+					
+							}
+						}
+					}
+				else if ( cantDest<5 && gen.nextInt(2) == 0 ) {
+					for (int i=0;i<destructor.length;i++){
+						 
+						if (this.destructor[i] == null) {
+							this.destructor[i] = new Destructor();
+							ultimodx = destructor[i].getX();
+							ultimody = destructor[i].getY();
+							cantDest+=1;
+							if (this.destructor[i].x != ultimodx && this.destructor[i].x<400) {
+								this.destructor[i].x -=100;
+							}
+							if (this.destructor[i].x != ultimodx && this.destructor[i].x>400) {
+								this.destructor[i].x +=100;
+							}
+							if (this.destructor[i].y != ultimody) {
+								this.destructor[i].y +=20;
+							}
+							break;
+							}
+						
+						
+						}
+					}
 			}
 			
 		}
