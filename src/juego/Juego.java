@@ -96,11 +96,13 @@ public class Juego extends InterfaceJuego {
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
-		if (!cargarMenu) {
-			iniciarMenu();
-		}
-	}
-	public void iniciarMenu() {
+		
+	
+//		if (!cargarMenu) {
+//			iniciarMenu();
+//		}
+	//}
+	/*public void iniciarMenu() {
 		if(entorno.sePresiono(entorno.TECLA_ENTER)) {
 			cargarMenu = true;
 			return;
@@ -115,10 +117,10 @@ public class Juego extends InterfaceJuego {
 				contMenu--;
 			}
 		
-	}
+	}*/
 		
 		
-	public void inicioJuego() {	
+//	public void inicioJuego() {	
 		temp++;
 		entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
 		
@@ -262,7 +264,7 @@ public class Juego extends InterfaceJuego {
 			//CIERRE ASTROMEGASHIP//
 			
 			//ASTEROID//
-			if (temp % 50 == 0) {
+			if (temp % 60 == 0) {
 				if (cantAst<4 && gen.nextInt(2) == 1) {
 					for (int i=0;i<asteroid.length;i++) {
 						if (this.asteroid[i] == null) {
@@ -409,10 +411,11 @@ public class Juego extends InterfaceJuego {
 										&& (destructor[i].y - asteroid[j].y < 80 && destructor[i].y - asteroid[j].y >-80) 
 										) 
 									{
-										destructor[i].angulo = Math.PI - destructor[i].angulo;
+										destructor[i].angulo = Math.PI +destructor[i].angulo;
 										destructor[i].x+=0.3;
-									
-										asteroid[j].angulo = Math.PI - asteroid[j].angulo;
+										destructor[i].y+=2.3;
+										asteroid[j].angulo = Math.PI + asteroid[j].angulo;
+										asteroid[j].x+=0.3;
 										if (asteroid[j].angulo<0){
 											asteroid[j].x+= 0.3;
 											}
@@ -442,7 +445,9 @@ public class Juego extends InterfaceJuego {
 			System.exit(0);
 		}
 		
-
+	
+		
+	
 }
 
 	@SuppressWarnings("unused")
