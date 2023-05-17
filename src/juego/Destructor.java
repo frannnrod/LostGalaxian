@@ -64,7 +64,7 @@ public class Destructor {
 	public void avanzar(AstroMegaShip astromegaship) 
 	{
 
-		this.y+= this.velocidad * Math.sin(this.angulo);
+		this.y+= this.velocidad  * Math.sin(this.angulo);
 		this.x+= this.velocidad * Math.cos(this.angulo);
 		bx = this.x;
 		if (this.x < 20 )
@@ -78,8 +78,11 @@ public class Destructor {
 			this.x = 780;
 			this.angulo = Math.PI - this.angulo;
 		   }
+		if (this.y < 630) {
+			this.y+= this.velocidad*0.1  ;
+		}
 		if (this.y > 630) {
-			this.y = 0;
+			this.y = 0 ;
 			if ((this.y > 424 && this.y <555) && (this.x - astromegaship.x) > -30 && (this.x - astromegaship.x) < 30);{
 				this.colision=true;
 				System.out.println("colision");
