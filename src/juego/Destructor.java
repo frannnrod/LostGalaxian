@@ -27,21 +27,15 @@ public class Destructor {
 		this.diametro = 20;
 		Random gen = new Random();
 		
-		this.x = gen.nextInt(800) + 1;
-		this.y = gen.nextInt(100) + 1;
+		this.x = gen.nextDouble(800) + 1;
+		this.y = gen.nextInt(50,80) + 1;
 		img1 = Herramientas.cargarImagen("destructor.png");
 		bulletd = Herramientas.cargarImagen("bulletd.png");
 		by=y;
 		bx =x;
-		this.velocidad = gen.nextInt(2) + 1;
+		this.velocidad = 2;
 		
-		this.signo = new int[2];
-		this.signo[0] = -1;
-		this.signo[1] = 1;
 
-		this.angulo = Math.PI/2 + Math.PI/4 * signo[gen.nextInt(2)];
-//		System.out.println(this.x+" "+this.y+" "+this.velocidad+" "+  this.angulo);
-//		System.exit(0);
 		this.atrapada=false;
 		this.colision=false;
 		
@@ -51,9 +45,9 @@ public class Destructor {
 	{
 		if (entorno== null) return;
 		if (this.y < 600)
-		entorno.dibujarImagen(img1,this.x, this.y, this.angulo,0.2);
+		entorno.dibujarImagen(img1,this.x, this.y, -0.2,0.2);
 		else 
-			entorno.dibujarImagen(img1,this.x, this.y, this.angulo,0.2);
+			entorno.dibujarImagen(img1,this.x, this.y, -0.2,0.2);
 	
 	}
 	public void disparar(Entorno entorno) {
@@ -72,11 +66,10 @@ public class Destructor {
 
 	public void avanzar(AstroMegaShip astromegaship) 
 	{
-		this.y+= this.velocidad*0.3 * Math.sin(this.angulo);
-		this.x+= this.velocidad*0.7 * Math.cos(this.angulo);
+
+		this.y+= this.velocidad * Math.sin(this.angulo);
+		this.x+= this.velocidad * Math.cos(this.angulo);
 		bx = this.x;
-//		this.y+= this.velocidad * Math.sin(this.angulo);
-//		this.x+= this.velocidad * Math.cos(this.angulo);
 		if (this.x < 20 )
 		   {
 			this.x = 20;

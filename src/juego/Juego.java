@@ -26,6 +26,7 @@ public class Juego extends InterfaceJuego {
 	boolean balaenemigo=false;
 	public final char TECLA_ESC = 27;
 	int navesDestruidas = 0;
+	int navesDestruidas2 = 0;
 	boolean [] vidas = {true,true,true};
 	
 	int vidasTotal = 4;
@@ -247,7 +248,10 @@ public class Juego extends InterfaceJuego {
 				{
 					if (destructor[i]!=null) {
 						destructor[i].avanzar(astromegaship);
-						destructor[i].disparar(entorno);
+						if (destructor[i].x>astromegaship.x) {
+							destructor[i].disparar(entorno);
+					}
+
 						
 						
 						for (int j=0;j<asteroid.length;j++) { //LOGICA CUANDO HAY UNA COLISION ENTRE ASTEROIDE Y DESTRUCTOR
@@ -257,10 +261,15 @@ public class Juego extends InterfaceJuego {
 										) {
 									
 									destructor[i].angulo = Math.PI - destructor[i].angulo;
+									destructor[i].x+=2;
 									
 									asteroid[j].angulo = Math.PI - asteroid[j].angulo;
-									asteroid[j].x+= 1*0.7;
-									asteroid[j].y+= 1*0.7;
+									if (asteroid[j].angulo<0){
+									asteroid[j].x+= 2;
+									}
+									if (asteroid[j].angulo>0){
+										asteroid[j].x-= 2;
+										}
 								}
 							}
 							
@@ -302,6 +311,7 @@ public class Juego extends InterfaceJuego {
 									(astromegaship.posicionBalaX() - destructor[i].x < 100 && astromegaship.posicionBalaX() - destructor[i].x > -100 )) {
 								
 								navesDestruidas++;
+								navesDestruidas2++;
 								explosionx=destructor[i].x;
 								explosiony=destructor[i].y;
 								bala= false;
@@ -309,10 +319,10 @@ public class Juego extends InterfaceJuego {
 								entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
 								astromegaship.by=450;
 								System.out.println(destructor.length);
-								if (navesDestruidas == destructor.length) { //UNA VEZ QUE MUEREN LOS DESTRUCTORES APARECEN MAS (¿SISTEMAS DE RONDAS?)
+								if (navesDestruidas2 == 4) { //UNA VEZ QUE MUEREN LOS DESTRUCTORES APARECEN MAS (¿SISTEMAS DE RONDAS?)
 									
-										navesDestruidas=0;
-										this.destructor = new Destructor[6];
+										navesDestruidas2=0;
+										this.destructor = new Destructor[4];
 										
 										for(int i1 = 0; i1<this.destructor.length; i1++) {
 											this.destructor[i1] = new Destructor();
