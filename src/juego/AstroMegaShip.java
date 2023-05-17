@@ -27,9 +27,6 @@ public class AstroMegaShip {
 		    motor=false; 
 			img1 = Herramientas.cargarImagen("nave.png");
 			img2 = Herramientas.cargarImagen("nave2.png");
-			bullet = Herramientas.cargarImagen("bullet.png");
-			bx=x;
-			by=y;
 			disparar=false;
 		}
 		
@@ -46,26 +43,23 @@ public class AstroMegaShip {
 			entorno.dibujarImagen(bullet, this.x, this.by, 0,0.2);
 			this.disparar=true;
 		}
-		public void avanzarDisparo() {
-				this.by-=17;
-			
-		}
-		public void frenardisparo(Destructor[] destructor, boolean bala) {
-			if (this.by<0){
-				
-				by=450;
-				bala = false;
-				disparar=false;
-			
-				
-			}
-			for (int i= 0; i < destructor.length; i++) {
-				if (this.by == destructor[i].y) {
-				
-					by=450;
-				}
-			}
-		}
+
+////		public void frenardisparo(Destructor[] destructor, boolean bala) {
+////			if (this.by<0){
+////				
+////				by=450;
+////				bala = false;
+////				disparar=false;
+////			
+////				
+////			}
+//			for (int i= 0; i < destructor.length; i++) {
+//				if (this.by == destructor[i].y) {
+//				
+//					by=450;
+//				}
+//			}
+//		}
 		public double posicionBalaY() {
 			
 			return this.by;

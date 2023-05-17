@@ -10,34 +10,23 @@ import entorno.Herramientas;
 public class Asteroid {
 	// Variables de instancia
 		 double x, y;
-		private double diametro;
 		private double velocidad;
 		 double angulo; 
-		private boolean atrapada;
 		private int[] signo; 
 		Image img1;
 		public boolean colision;
 		public Asteroid() 
 		{
-			//this.x = x;
-			//this.y = y;
-			this.diametro = 20;
 			Random gen = new Random();
 			
-			this.x = gen.nextInt(800) + 1;
+			this.x = gen.nextDouble(800) + 1;
 			this.y = gen.nextInt(200) + 1;
-			img1 = Herramientas.cargarImagen("asteroid.png");
-			
-			this.velocidad = 2;
-			
+			img1 = Herramientas.cargarImagen("asteroid.png");	
+			this.velocidad = 2;	
 			this.signo = new int[2];
 			this.signo[0] = -1;
 			this.signo[1] = 1;
-
 			this.angulo = Math.PI/2 + Math.PI/4 * signo[gen.nextInt(2)];
-//			System.out.println(this.x+" "+this.y+" "+this.velocidad+" "+  this.angulo);
-//			System.exit(0);
-			this.atrapada=false;
 			this.colision=false;
 			
 		}
@@ -56,8 +45,6 @@ public class Asteroid {
 		{
 			this.y+= this.velocidad*0.3 * Math.sin(this.angulo);
 			this.x+= this.velocidad*0.7 * Math.cos(this.angulo);	
-//			this.y+= this.velocidad * Math.sin(this.angulo);
-//			this.x+= this.velocidad * Math.cos(this.angulo);
 			if (this.x < 20 )
 			   {
 				this.x = 20; 
@@ -89,15 +76,4 @@ public class Asteroid {
 		{
 			return this.x;
 		}
-
-		public boolean getAtrapada() 
-		{
-			return this.atrapada;
-		}
-
-		public void setAtrapada(boolean atrapada) {
-			this.atrapada = atrapada;
-		}
-
-		
 }

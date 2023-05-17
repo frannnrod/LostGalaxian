@@ -30,9 +30,6 @@ public class Destructor {
 		this.x = gen.nextDouble(800) + 1;
 		this.y = gen.nextInt(50,80) + 1;
 		img1 = Herramientas.cargarImagen("destructor.png");
-		bulletd = Herramientas.cargarImagen("bulletd.png");
-		by=y;
-		bx =x;
 		this.velocidad = 2;
 		
 
@@ -50,13 +47,13 @@ public class Destructor {
 			entorno.dibujarImagen(img1,this.x, this.y, -0.2,0.2);
 	
 	}
-	public void disparar(Entorno entorno) {
-		entorno.dibujarImagen(bulletd, this.bx, this.by, 0,0.2);
-		this.by+=5;
-		if(this.by>600) {
-			this.by=this.y;
-		}
-	}
+//	public void disparar(Entorno entorno) {
+//		entorno.dibujarImagen(bulletd, this.bx, this.by, 0,0.2);
+//		this.by+=5;
+//		if(this.by>600) {
+//			this.by=this.y;
+//		}
+	
 	public double disparoDestructor() {
 		return this.by;
 	}
@@ -100,16 +97,5 @@ public class Destructor {
 	{
 		return this.x;
 	}
-
-	public boolean getAtrapada() 
-	{
-		return this.atrapada;
-	}
-
-	public void setAtrapada(boolean atrapada) {
-		this.atrapada = atrapada;
-	}
-
-	
 
 }

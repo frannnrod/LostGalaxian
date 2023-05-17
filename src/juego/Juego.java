@@ -15,6 +15,8 @@ public class Juego extends InterfaceJuego {
 	Asteroid[] asteroid;
 	Destructor[] destructor;
 	private AstroMegaShip astromegaship;
+	bulletDestructor [] bulletsdestructor;
+	bulletAstroMegaShip bulletsastromegaship;
 	Image imgFondo;
 	Image loopFondo;
 	Image vida;
@@ -27,6 +29,8 @@ public class Juego extends InterfaceJuego {
 	public final char TECLA_ESC = 27;
 	int navesDestruidas = 0;
 	int navesDestruidas2 = 0;
+	int cantAst = 0;
+	int cantDest = 0;
 	boolean [] vidas = {true,true,true};
 	
 	int vidasTotal = 4;
@@ -55,13 +59,25 @@ public class Juego extends InterfaceJuego {
 		if (juego==true) 
 		{
 			astromegaship = new AstroMegaShip(400, 500);
-			this.asteroid = new Asteroid[4]; 
-			this.destructor = new Destructor[4];
-			for(int i = 0; i<this.asteroid.length; i++) {
-				this.asteroid[i] = new Asteroid();
+			bulletsastromegaship = null;
+			this.asteroid = new Asteroid[6]; 
+			this.destructor = new Destructor[5];
+			this.bulletsdestructor = new bulletDestructor[5];
+			
+			for (int i = 0; i < this.destructor.length; i++) {
+
+				this.destructor[i] = null;
 			}
-			for(int i = 0; i<this.destructor.length; i++) {
-				this.destructor[i] = new Destructor();
+
+			for (int i = 0; i < this.asteroid.length; i++) {
+
+				this.asteroid[i] = null;
+			}
+
+			for (int i = 0; i < this.bulletsdestructor.length; i++) {
+
+				this.bulletsdestructor[i] = null;
+
 			}
 			
 			// Inicializar lo que haga falta para el juego
@@ -166,6 +182,24 @@ public class Juego extends InterfaceJuego {
 
 		if (!entorno.estaPresionada('P') && juego==true) 
 		{
+			// FONDO LOOP//
+			fondoy2-=1;
+			fondoy-=1;
+			if (fondoy2==-300) {
+				fondoy2=900;
+			}
+			if (fondoy2==300) {
+				fondoy2=300;
+			}
+			if (fondoy==300) {
+				fondoy=300;
+			}
+			if (fondoy==-300) {
+				fondoy=900;
+			}
+			//CIERRE LOOP//
+			
+			//ASTROMEGASHIP//
 			if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 				astromegaship.moverDerecha();
 				astromegaship.prenderMotor();
@@ -182,180 +216,167 @@ public class Juego extends InterfaceJuego {
 				astromegaship.apagarMotor();
 				
 			}	
-			
-			for (int i=0;i<asteroid.length;i++)
-			{
-				if (asteroid[i]!=null && !asteroid[i].getAtrapada())
-				{
-					asteroid[i].dibujarse(entorno);
-				}		
-			}
-		
-			for (int i=0;i<destructor.length;i++)
-			{
-				
-				if (destructor[i]!=null && !destructor[i].getAtrapada()  )
-					
-				{
-					
-					destructor[i].dibujarse(entorno);
-					
-					
-				}		
-			}
-			fondoy2-=1;
-			fondoy-=1;
-			if (fondoy2==-300) {
-				fondoy2=900;
-			}
-			if (fondoy2==300) {
-				fondoy2=300;
-			}
-			if (fondoy==300) {
-				fondoy=300;
-			}
-			if (fondoy==-300) {
-				fondoy=900;
-			}
-			
-			entorno.cambiarFont("SPACEMAN", 20, Color.white);
-			entorno.escribirTexto("SCORE:" + navesDestruidas  ,astromegaship.x-60, 570);
-
-			for (int i=0;i<asteroid.length;i++)
-			{
-				{
-					if (asteroid[i]!=null) {
-						asteroid[i].avanzar(astromegaship);
-						if (!colisionDetectada && asteroid[i].colision) {
-							System.out.println("COLISION");
-							 vidasTotal--;
-							 vidas[vidasTotal - 1] = false;
-							 asteroid[i] = null;
-							
-						}    
-  					}
-					
-					
-				}
-				
-				
-			}
-			
-			
-			dioDisparo = false;
-			for (int i=0;i<destructor.length;i++)
-			{
-				{
-					if (destructor[i]!=null) {
-						destructor[i].avanzar(astromegaship);
-						if (destructor[i].x>astromegaship.x) {
-							destructor[i].disparar(entorno);
-					}
-
-						
-						
-						for (int j=0;j<asteroid.length;j++) { //LOGICA CUANDO HAY UNA COLISION ENTRE ASTEROIDE Y DESTRUCTOR
-							if (asteroid[j] !=null) {
-								if ((destructor[i].x - asteroid[j].x < 80 && destructor[i].x - asteroid[j].x >-80) 
-										&& (destructor[i].y - asteroid[j].y < 80 && destructor[i].y - asteroid[j].y >-80) 
-										) {
-									
-									destructor[i].angulo = Math.PI - destructor[i].angulo;
-									destructor[i].x+=2;
-									
-									asteroid[j].angulo = Math.PI - asteroid[j].angulo;
-									if (asteroid[j].angulo<0){
-									asteroid[j].x+= 2;
-									}
-									if (asteroid[j].angulo>0){
-										asteroid[j].x-= 2;
-										}
-								}
-							}
-							
-						}
-						
-						if ((destructor[i].disparoDestructor() - astromegaship.y < 20 && destructor[i].disparoDestructor() - astromegaship.y > -20) &&
-								destructor[i].disparoDestructorX() - astromegaship.x < 50 && destructor[i].disparoDestructorX() - astromegaship.x > -50) {
-							vidasTotal--;
-							 vidas[vidasTotal - 1] = false;
-							System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
-							destructor[i].by = destructor[i].y;
-							destructor[i].bx = destructor[i].x;
-							//dioDisparo = true;
-						}
-						if (destructor[i].colision) {
-						}
-						
-						
-						//dioDisparo= false;
-					}
-					
-				}
-			}
 			astromegaship.dibujarse(entorno);
 			if (entorno.sePresiono(entorno.TECLA_ESPACIO)&& bala==false) {
 				bala=true;
-				astromegaship.disparo(entorno);
+				bulletsastromegaship = new bulletAstroMegaShip(astromegaship.x,450);
 			}
 			
 			if (bala) {
-				if(astromegaship.by>0) {
-					astromegaship.avanzarDisparo();
-					astromegaship.disparo(entorno);
-					
-					for (int i= 0; i < destructor.length; i++) {
-						if (destructor[i]!=null) {
-							
-							if ((astromegaship.posicionBalaY() - destructor[i].y < 33 && astromegaship.posicionBalaY() - destructor[i].y > -33) && 
-									(astromegaship.posicionBalaX() - destructor[i].x < 100 && astromegaship.posicionBalaX() - destructor[i].x > -100 )) {
-								
-								navesDestruidas++;
-								navesDestruidas2++;
-								explosionx=destructor[i].x;
-								explosiony=destructor[i].y;
-								bala= false;
-								destructor[i] = null;
-								entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
-								astromegaship.by=450;
-								System.out.println(destructor.length);
-								if (navesDestruidas2 == 4) { //UNA VEZ QUE MUEREN LOS DESTRUCTORES APARECEN MAS (¿SISTEMAS DE RONDAS?)
-									
-										navesDestruidas2=0;
-										this.destructor = new Destructor[4];
-										
-										for(int i1 = 0; i1<this.destructor.length; i1++) {
-											this.destructor[i1] = new Destructor();
-											
-										
-										
-											
-									}
-									
-									
-										
-								}
-							}
-						}
-					}
-					
+				if(bulletsastromegaship.by>0) {
+					bulletsastromegaship.avanzarDisparo();
+					bulletsastromegaship.dibujar(entorno);
 				}
 				else {
-					bala=false;
-					astromegaship.by=450;
+					bala=false;	
+					bulletsastromegaship=null;
 				}
 			}
+				
+			entorno.cambiarFont("SPACEMAN", 20, Color.white);
+			entorno.escribirTexto("SCORE:" + navesDestruidas  ,astromegaship.x-60, 570);
+			//CIERRE ASTROMEGASHIP//
 			
-		}
+			//ASTEROID//
+			if (cantAst<4) {
+				for (int i=0;i<asteroid.length;i++) {
+					if (this.asteroid[i] == null) {
+						this.asteroid[i] = new Asteroid();	
+						cantAst+=1;
+				}
+				
+			}
+			}
+					
+			for (int i=0;i<asteroid.length;i++) 
+			{		
+				if (asteroid[i]!=null)
+				{
+					asteroid[i].dibujarse(entorno);
+					asteroid[i].avanzar(astromegaship);
+					if (!colisionDetectada && asteroid[i].colision) {
+						System.out.println("COLISION");
+						vidasTotal--;
+						vidas[vidasTotal - 1] = false;
+						asteroid[i] = null;
+						
+					}    
+				}		
+			}
+			
+			//CIERRE ASTEROID
+			
+			//DESTRUCTOR
+			if (cantDest<5) {
+				for (int i=0;i<destructor.length;i++){
+					if (this.destructor[i] == null) {
+						this.destructor[i] = new Destructor();	
+						cantDest+=1;
+						}	
+					}
+			}
+					for (int i=0;i<destructor.length;i++) {
+						if (destructor[i]!=null) {
+							destructor[i].avanzar(astromegaship);
+							destructor[i].dibujarse(entorno);
+							if ((astromegaship.y - destructor[i].y < 33 && astromegaship.y - destructor[i].y > -33) && 
+								(astromegaship.x - destructor[i].x < 100 && astromegaship.x - destructor[i].x > -100 )) 
+								{
+								vidasTotal--;
+								}
+							if (bala) {
+										if ((bulletsastromegaship.by - destructor[i].y < 33 && bulletsastromegaship.by - destructor[i].y > -33) &&
+											(bulletsastromegaship.bx - destructor[i].x < 100 && bulletsastromegaship.bx - destructor[i].x > -100 )) {
+											navesDestruidas++;
+											explosionx=destructor[i].x;
+											explosiony=destructor[i].y;
+											bala= false;
+											destructor[i] = null;
+											entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
+											astromegaship.by=450;
+											}
+										}
+							}
+			
+				}
+				for (int i = 0; i < bulletsdestructor.length; i++) {
+					if (this.destructor[i] != null && bulletsdestructor[i] == null) {
+						if (astromegaship.x-destructor[i].x<10) {
+							bulletsdestructor[i] = new bulletDestructor(destructor[i].x, destructor[i].y);
+						}
+
+					}
+					
+					if (bulletsdestructor[i] != null) {
+	
+						bulletsdestructor[i].avanzar();	
+						bulletsdestructor[i].dibujar(entorno);
+					}
+					if (bulletsdestructor[i] != null) {
+						if ((bulletsdestructor[i].by- astromegaship.y < 20 && bulletsdestructor[i].by - astromegaship.y > -20) &&
+								bulletsdestructor[i].bx - astromegaship.x < 50 && bulletsdestructor[i].bx - astromegaship.x > -50) {
+							vidasTotal--;
+							bulletsdestructor[i]=null;
+							vidas[vidasTotal - 1] = false;
+							System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
+							destructor[i].by = destructor[i].y;
+							destructor[i].bx = destructor[i].x;
+						}
+					}
+					if (bulletsdestructor[i] != null) {
+						
+						if (bulletsdestructor[i].by > 600) {
+							bulletsdestructor[i] = null;
+						}
+					}
+
+						}
+
+
+				
+				//CIERRE DESTRUCTOR//
+					for (int i=0;i<destructor.length;i++) {	
+						for (int j=0;j<asteroid.length;j++) { //LOGICA CUANDO HAY UNA COLISION ENTRE ASTEROIDE Y DESTRUCTOR
+							if (asteroid[j] !=null && destructor[i]!=null) {
+								if ((destructor[i].x - asteroid[j].x < 80 && destructor[i].x - asteroid[j].x >-80) 
+										&& (destructor[i].y - asteroid[j].y < 80 && destructor[i].y - asteroid[j].y >-80) 
+										) 
+									{
+										destructor[i].angulo = Math.PI - destructor[i].angulo;
+										destructor[i].x+=2;
+									
+										asteroid[j].angulo = Math.PI - asteroid[j].angulo;
+										if (asteroid[j].angulo<0){
+											asteroid[j].x+= 2;
+											}
+										if (asteroid[j].angulo>0){
+											asteroid[j].x-= 2;
+											}
+								}
+							}
+							
+						}
+				}
+					
+//								if (navesDestruidas2 == 4) { //UNA VEZ QUE MUEREN LOS DESTRUCTORES APARECEN MAS (¿SISTEMAS DE RONDAS?)
+//									
+//										navesDestruidas2=0;
+//										this.destructor = new Destructor[4];
+//										
+//										for(int i1 = 0; i1<this.destructor.length; i1++) {
+//											this.destructor[i1] = new Destructor();
+//											}
+//									}
 
 		
-		if (entorno.sePresiono(TECLA_ESC)) {
+		}
+	//CIERRE JUEGO
+	if (entorno.sePresiono(TECLA_ESC)) {
 			System.exit(0);
 		}
-
-
 		
-	}
+
+}
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
