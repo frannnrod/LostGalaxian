@@ -17,15 +17,11 @@ public class Juego extends InterfaceJuego {
 	private AstroMegaShip astromegaship;
 	bulletDestructor [] bulletsdestructor;
 	bulletAstroMegaShip bulletsastromegaship;
-	Image imgFondo;
-	Image loopFondo;
-	Image vida;
-	Image vidaMuerto;
-	Image explosion;
-	Image fin;
+	Image imgFondo,loopFondo, vida, vidaMuerto, explosion, fin;
+
 	boolean juego = true;
-	boolean bala=false;
-	boolean balaenemigo=false;
+	boolean bala, balaenemigo, colisionDetectada, dioDisparo = false;
+
 	public final char TECLA_ESC = 27;
 	int navesDestruidas = 0;
 	int navesDestruidas2 = 0;
@@ -34,12 +30,11 @@ public class Juego extends InterfaceJuego {
 	boolean [] vidas = {true,true,true};
 	
 	int vidasTotal = 4;
-	boolean colisionDetectada = false;
 	double fondoy = 300;
 	double fondoy2= 900;
 	double explosionx;
 	double explosiony;
-	boolean dioDisparo = false;
+	
 	int rondas = 0;
 	int temporizador = 1;
 	// Variables y métodos propios de cada grupo
@@ -301,7 +296,7 @@ public class Juego extends InterfaceJuego {
 				}
 				for (int i = 0; i < bulletsdestructor.length; i++) {
 					if (this.destructor[i] != null && bulletsdestructor[i] == null) {
-						if (astromegaship.x-destructor[i].x<10) {
+						if (astromegaship.x-destructor[i].x<5) {
 							bulletsdestructor[i] = new bulletDestructor(destructor[i].x, destructor[i].y);
 						}
 
@@ -319,8 +314,6 @@ public class Juego extends InterfaceJuego {
 							bulletsdestructor[i]=null;
 							vidas[vidasTotal - 1] = false;
 							System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
-							destructor[i].by = destructor[i].y;
-							destructor[i].bx = destructor[i].x;
 						}
 					}
 					if (bulletsdestructor[i] != null) {
