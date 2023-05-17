@@ -3,7 +3,7 @@
 
 import java.awt.Color;
 import java.awt.Image;
-
+import java.util.Random;
 
 import entorno.Entorno;
 import entorno.Herramientas;
@@ -34,9 +34,13 @@ public class Juego extends InterfaceJuego {
 	double fondoy2= 900;
 	double explosionx;
 	double explosiony;
+	int temp = 0;
+	int rondas = 0 ;
+	int random;
+	double ultimodx;
+	double ultimody;
+	Random gen = new Random();
 	
-	int rondas = 0;
-	int temporizador = 1;
 	// Variables y métodos propios de cada grupo
 	// ...
 
@@ -90,7 +94,7 @@ public class Juego extends InterfaceJuego {
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
-		
+		temp++;
 		entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
 		
 		entorno.dibujarImagen(imgFondo, 400, fondoy, 0);
@@ -233,16 +237,60 @@ public class Juego extends InterfaceJuego {
 			//CIERRE ASTROMEGASHIP//
 			
 			//ASTEROID//
-			if (cantAst<4) {
-				for (int i=0;i<asteroid.length;i++) {
-					if (this.asteroid[i] == null) {
-						this.asteroid[i] = new Asteroid();	
-						cantAst+=1;
-				}
-				
-			}
-			}
+			if (temp % 50 == 0) {
+				if (cantAst<4 && gen.nextInt(2) == 1) {
+					for (int i=0;i<asteroid.length;i++) {
+						if (this.asteroid[i] == null) {
+							this.asteroid[i] = new Asteroid();	
+							cantAst+=1;
+							break;
 					
+							}
+						}
+					}
+				else if ( cantDest<5 && gen.nextInt(2) == 0 ) {
+					for (int i=0;i<destructor.length;i++){
+						 
+						if (this.destructor[i] == null) {
+							this.destructor[i] = new Destructor();
+							ultimodx = destructor[i].getX();
+							ultimody = destructor[i].getY();
+							cantDest+=1;
+							if (this.destructor[i].x != ultimodx && this.destructor[i].x<400) {
+								this.destructor[i].x -=100;
+							}
+							if (this.destructor[i].x != ultimodx && this.destructor[i].x>400) {
+								this.destructor[i].x +=100;
+							}
+							if (this.destructor[i].y != ultimody) {
+								this.destructor[i].y +=20;
+							}
+							break;
+							}
+						
+						
+						}
+					}
+			}
+			
+			for (int i=0;i<destructor.length;i++) {
+				for (int k=0;k<destructor.length;k++) {
+					if(destructor[i]!=null && destructor[k] !=null) {
+						if ((destructor[i].x - destructor[k].x < 80 && destructor[i].x - destructor[k].x >-80) 
+										&& (destructor[i].y - destructor[k].y < 80 && destructor[i].y - destructor[k].y >-80) ) {
+							destructor[i].angulo = Math.PI - destructor[i].angulo;
+							destructor[i].x+=0.3;
+						
+							 destructor[k].angulo = Math.PI -  destructor[k].angulo;
+							if ( destructor[k].angulo<0){
+								 destructor[k].x+= 0.3;
+								}
+							if ( destructor[k].angulo>0){
+								 destructor[k].x-= 0.3; }
+						}
+					}
+				}
+			}
 			for (int i=0;i<asteroid.length;i++) 
 			{		
 				if (asteroid[i]!=null)
@@ -262,14 +310,15 @@ public class Juego extends InterfaceJuego {
 			//CIERRE ASTEROID
 			
 			//DESTRUCTOR
-			if (cantDest<5) {
-				for (int i=0;i<destructor.length;i++){
-					if (this.destructor[i] == null) {
-						this.destructor[i] = new Destructor();	
-						cantDest+=1;
-						}	
-					}
-			}
+//			if (cantDest<5) {
+//				for (int i=0;i<destructor.length;i++){
+//					 random= gen.nextInt(100);
+//					if (this.destructor[i] == null && random==1 ) {
+//						this.destructor[i] = new Destructor();	
+//						cantDest+=1;
+//						}	
+//					}
+//			}
 					for (int i=0;i<destructor.length;i++) {
 						if (destructor[i]!=null) {
 							destructor[i].avanzar(astromegaship);
@@ -336,14 +385,14 @@ public class Juego extends InterfaceJuego {
 										) 
 									{
 										destructor[i].angulo = Math.PI - destructor[i].angulo;
-										destructor[i].x+=2;
+										destructor[i].x+=0.3;
 									
 										asteroid[j].angulo = Math.PI - asteroid[j].angulo;
 										if (asteroid[j].angulo<0){
-											asteroid[j].x+= 2;
+											asteroid[j].x+= 0.3;
 											}
 										if (asteroid[j].angulo>0){
-											asteroid[j].x-= 2;
+											asteroid[j].x-= 0.3;
 											}
 								}
 							}

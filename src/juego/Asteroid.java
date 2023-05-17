@@ -20,7 +20,7 @@ public class Asteroid {
 			Random gen = new Random();
 			
 			this.x = gen.nextDouble(800) + 1;
-			this.y = gen.nextInt(200) + 1;
+			this.y = gen.nextInt(20) + 1;
 			img1 = Herramientas.cargarImagen("asteroid.png");	
 			this.velocidad = 2;	
 			this.signo = new int[2];
@@ -35,9 +35,9 @@ public class Asteroid {
 		{
 			
 			if (this.y < 600)
-			entorno.dibujarImagen(img1,this.x, this.y, this.angulo,0.8);
+			entorno.dibujarImagen(img1,this.x, this.y, this.angulo,0.7);
 			else 
-				entorno.dibujarImagen(img1,this.x, this.y, this.angulo,0.8);
+				entorno.dibujarImagen(img1,this.x, this.y, this.angulo,0.7);
 		
 		}
 

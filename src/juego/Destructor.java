@@ -28,7 +28,7 @@ public class Destructor {
 		Random gen = new Random();
 		
 		this.x = gen.nextDouble(800) + 1;
-		this.y = gen.nextInt(50,80) + 1;
+		this.y = gen.nextInt(-10,20) + 1;
 		img1 = Herramientas.cargarImagen("destructor.png");
 		this.velocidad = 2;
 		
@@ -42,9 +42,9 @@ public class Destructor {
 	{
 		if (entorno== null) return;
 		if (this.y < 600)
-		entorno.dibujarImagen(img1,this.x, this.y, -0.2,0.2);
+		entorno.dibujarImagen(img1,this.x, this.y, -0.2,0.16);
 		else 
-			entorno.dibujarImagen(img1,this.x, this.y, -0.2,0.2);
+			entorno.dibujarImagen(img1,this.x, this.y, -0.2,0.16);
 	
 	}
 //	public void disparar(Entorno entorno) {
@@ -71,15 +71,17 @@ public class Destructor {
 		   {
 			this.x = 20;
 		
-		    this.angulo = Math.PI - this.angulo;
+		    this.angulo = Math.PI + this.angulo;
+
 		   }
 		if (this.x > 780 )
 		   {
 			this.x = 780;
-			this.angulo = Math.PI - this.angulo;
+			this.angulo = Math.PI + this.angulo;
+			
 		   }
 		if (this.y < 630) {
-			this.y+= this.velocidad*0.1  ;
+			this.y+= this.velocidad*0.3  ;
 		}
 		if (this.y > 630) {
 			this.y = 0 ;
