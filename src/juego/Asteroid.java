@@ -44,20 +44,19 @@ public class Asteroid {
 		public void avanzar(AstroMegaShip astromegaship) 
 		{
 			this.y+= this.velocidad*0.3 * Math.sin(this.angulo);
-			this.x+= this.velocidad*0.7 * Math.cos(this.angulo);	
-			if (this.x < 20 )
-			   {
-				this.x = 20; 
-			    this.angulo = Math.PI - this.angulo;
-			   }
-			if (this.x > 780 )
-			   {
-				this.x = 780;
+			this.x+= this.velocidad*0.7 * Math.cos(this.angulo);
+			if(this.x < 800 * 0.05) {
+				this.x = 800 * 0.05;
 				this.angulo = Math.PI - this.angulo;
-			   }
-			if (this.y > 630) {
-				this.y = 0;
 			}
+			if(this.x > 800 * 0.95) {
+				this.x = 800 * 0.95;
+				this.angulo = Math.PI - this.angulo;
+			}
+			if (this.y > 600 + 25) {
+				this.y = -25 * 2;
+			}
+			
 			if ((this.y > 424 && this.y <555) && (this.x - astromegaship.x) > -30 && (this.x - astromegaship.x) < 30) {
 				this.colision=true;
 				

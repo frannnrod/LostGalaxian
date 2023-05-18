@@ -26,6 +26,7 @@ public class Juego extends InterfaceJuego {
 	int navesDestruidas = 0;
 	int navesDestruidas2 = 0;
 	int cantAst = 0;
+	int cantAstDest = 0;
 	int cantDest = 0;
 	boolean [] vidas = {true,true,true};
 	
@@ -62,8 +63,8 @@ public class Juego extends InterfaceJuego {
 			astromegaship = new AstroMegaShip(400, 500);
 			bulletsastromegaship = null;
 			this.asteroid = new Asteroid[6]; 
-			this.destructor = new Destructor[5];
-			this.bulletsdestructor = new bulletDestructor[5];
+			this.destructor = new Destructor[6];
+			this.bulletsdestructor = new bulletDestructor[6];
 			
 			for (int i = 0; i < this.destructor.length; i++) {
 
@@ -98,11 +99,14 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 		
 	
-//		if (!cargarMenu) {
-//			iniciarMenu();
-//		}
-	//}
-	/*public void iniciarMenu() {
+		if (!cargarMenu) {
+			iniciarMenu();
+		}
+		else if (cargarMenu) {
+			inicioJuego();
+		}
+	}
+	public void iniciarMenu() {
 		if(entorno.sePresiono(entorno.TECLA_ENTER)) {
 			cargarMenu = true;
 			return;
@@ -117,10 +121,11 @@ public class Juego extends InterfaceJuego {
 				contMenu--;
 			}
 		
-	}*/
+	}
 		
 		
-//	public void inicioJuego() {	
+	public void inicioJuego() {	
+		
 		temp++;
 		entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
 		
@@ -173,7 +178,6 @@ public class Juego extends InterfaceJuego {
 			 navesDestruidas = 0;
 			juego=true;
 			entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
-			
 			entorno.dibujarImagen(imgFondo, 400, fondoy, 0);
 			for (int i = 0; i<vidas.length;i++) {
 				if (vidas[i]) {
@@ -295,6 +299,18 @@ public class Juego extends InterfaceJuego {
 			entorno.escribirTexto("SCORE:" + navesDestruidas  ,astromegaship.x-60, 570);
 			//CIERRE ASTROMEGASHIP//
 			
+			//RESPAWN//
+			if (navesDestruidas2==3) {
+				navesDestruidas2=0;
+				cantDest=-3;
+			}
+			if (cantAstDest==1) {
+				cantAstDest=0;
+				cantAst-=2;
+			}
+			
+			//RESPAWN//
+			
 			//ASTEROID//
 			if (temp % 60 == 0) {
 				if (cantAst<4 && gen.nextInt(2) == 1) {
@@ -307,7 +323,7 @@ public class Juego extends InterfaceJuego {
 							}
 						}
 					}
-				else if ( cantDest<5 && gen.nextInt(2) == 0 ) {
+				else if ( cantDest<6 && gen.nextInt(2) == 0 ) {
 					for (int i=0;i<destructor.length;i++){
 						 
 						if (this.destructor[i] == null) {
@@ -358,8 +374,11 @@ public class Juego extends InterfaceJuego {
 					asteroid[i].avanzar(astromegaship);
 					if (!colisionDetectada && asteroid[i].colision) {
 						System.out.println("COLISION");
+						cantAstDest++;
 						vidasTotal--;
-						vidas[vidasTotal - 1] = false;
+						if (vidasTotal>0) {
+							vidas[vidasTotal - 1] = false;
+						}
 						asteroid[i] = null;
 						
 					}    
@@ -391,6 +410,7 @@ public class Juego extends InterfaceJuego {
 										if ((bulletsastromegaship.by - destructor[i].y < 33 && bulletsastromegaship.by - destructor[i].y > -33) &&
 											(bulletsastromegaship.bx - destructor[i].x < 100 && bulletsastromegaship.bx - destructor[i].x > -100 )) {
 											navesDestruidas++;
+											navesDestruidas2++;
 											explosionx=destructor[i].x;
 											explosiony=destructor[i].y;
 											bala= false;
@@ -446,7 +466,7 @@ public class Juego extends InterfaceJuego {
 										destructor[i].angulo = Math.PI +destructor[i].angulo;
 										destructor[i].x+=0.3;
 										destructor[i].y+=2.3;
-										asteroid[j].angulo = Math.PI + asteroid[j].angulo;
+										asteroid[j].angulo = Math.PI - asteroid[j].angulo;
 										asteroid[j].x+=0.3;
 										if (asteroid[j].angulo<0){
 											asteroid[j].x+= 0.3;
