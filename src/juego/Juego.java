@@ -18,7 +18,7 @@ public class Juego extends InterfaceJuego {
 	bulletDestructor [] bulletsdestructor;
 	bulletAstroMegaShip bulletsastromegaship;
 	Image imgFondo,loopFondo, vida, vidaMuerto, explosion, fin, fondoMenu;
-
+	Boss  boss;
 	boolean juego = true;
 	boolean bala, balaenemigo, colisionDetectada, dioDisparo, cargarMenu = false;
 
@@ -29,7 +29,7 @@ public class Juego extends InterfaceJuego {
 	int cantAstDest = 0;
 	int cantDest = 0;
 	boolean [] vidas = {true,true,true};
-	
+	int disparosaBoss = 0;
 	int vidasTotal = 4;
 	double fondoy = 300;
 	double fondoy2= 900;
@@ -42,6 +42,7 @@ public class Juego extends InterfaceJuego {
 	double ultimodx;
 	double ultimody;
 	Random gen = new Random();
+	int contInvocar = 0;
 	
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -66,6 +67,7 @@ public class Juego extends InterfaceJuego {
 			this.destructor = new Destructor[6];
 			this.bulletsdestructor = new bulletDestructor[6];
 			
+			this.boss= null;
 			for (int i = 0; i < this.destructor.length; i++) {
 
 				this.destructor[i] = null;
@@ -126,12 +128,12 @@ public class Juego extends InterfaceJuego {
 		
 	public void inicioJuego() {	
 		
-		temp++;
+		temp++; //Temporizador que se usa para marcar las salidas de los asteroides y naves
 		entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
 		
 		entorno.dibujarImagen(imgFondo, 400, fondoy, 0);
 
-
+		
 		for (int i = 0; i<vidas.length;i++) { //DIBUJAR LOS CORAZONES QUE REPRESENTAN LAS VIDAS
 			if (vidas[i]) {
 				entorno.dibujarImagen(vida, 25 + (i * 50), 25, 0,0.15);
@@ -422,6 +424,8 @@ public class Juego extends InterfaceJuego {
 							}
 			
 				}
+				
+					
 				for (int i = 0; i < bulletsdestructor.length; i++) {
 					if (this.destructor[i] != null && bulletsdestructor[i] == null) {
 						if (astromegaship.x-destructor[i].x<5) {
@@ -490,8 +494,93 @@ public class Juego extends InterfaceJuego {
 //											}
 //									}
 
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+				//CONFIGURANDO BOSS//
+					if(navesDestruidas == 2) {
+						for (int i = 0; i < this.destructor.length; i++) {
+
+							this.destructor[i] = null;
+						}
+					if (contInvocar == 0) {
+						this.boss = new Boss();
+						contInvocar++;
+					}
+						
+						
+					}
+					
+						if (boss!=null) {
+							this.boss.avanzar(astromegaship);
+							this.boss.dibujarse(entorno);
+							if ((astromegaship.y - this.boss.y < 33 && astromegaship.y - this.boss.y > -33) && 
+								(astromegaship.x - this.boss.x < 100 && astromegaship.x - this.boss.x > -100 )) 
+								{
+								System.out.println("PERDISTE MALO");
+								System.exit(0);
+								}
+							if (bala) {
+										if ((bulletsastromegaship.by - this.boss.y < 33 && bulletsastromegaship.by - this.boss.y > -33) &&
+											(bulletsastromegaship.bx - this.boss.x < 100 && bulletsastromegaship.bx - this.boss.x > -100 )) {
+											disparosaBoss++;
+											explosionx=this.boss.x;
+											explosiony=this.boss.y;
+											bala= false;
+											if (disparosaBoss==4) boss = null;
+											
+											entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
+											astromegaship.by=450;
+											}
+										}
+							}
+			
+				
+				
+					
+				for (int i = 0; i < bulletsdestructor.length; i++) {
+					if (this.boss != null && bulletsdestructor[i] == null) {
+						if (astromegaship.x-this.boss.x<5) {
+							bulletsdestructor[i] = new bulletDestructor(this.boss.x, this.boss.y);
+						}
+
+					}
+					
+					if (bulletsdestructor[i] != null) {
+	
+						bulletsdestructor[i].avanzar();	
+						bulletsdestructor[i].dibujar(entorno);
+					}
+					if (bulletsdestructor[i] != null) {
+						if ((bulletsdestructor[i].by- astromegaship.y < 20 && bulletsdestructor[i].by - astromegaship.y > -20) &&
+								bulletsdestructor[i].bx - astromegaship.x < 50 && bulletsdestructor[i].bx - astromegaship.x > -50) {
+							vidasTotal--;
+							bulletsdestructor[i]=null;
+							vidas[vidasTotal - 1] = false;
+							System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
+						}
+					}
+					if (bulletsdestructor[i] != null) {
+						
+						if (bulletsdestructor[i].by > 600) {
+							bulletsdestructor[i] = null;
+						}
+					}
+
+						}
 		
-		}
+		} 
+			
+				
+			
 	//CIERRE JUEGO
 	if (entorno.sePresiono(TECLA_ESC)) {
 			System.exit(0);
