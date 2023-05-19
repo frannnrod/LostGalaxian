@@ -176,6 +176,8 @@ public class Juego extends InterfaceJuego {
 			 vidas[0] = true;
 			 vidas[1] = true;
 			 vidas[2] = true;
+			 contInvocar = 0;
+			 this.boss = null;
 			 vidasTotal = 4;
 			 navesDestruidas = 0;
 			juego=true;
@@ -237,11 +239,87 @@ public class Juego extends InterfaceJuego {
 					}
 			}
 			
+			if(navesDestruidas == 2) {
+				for (int i = 0; i < this.destructor.length; i++) {
+
+					this.destructor[i] = null;
+				}
+				if (contInvocar == 0) {
+					this.boss = new Boss();
+					contInvocar++;
+			}
+				
+				
+			}
+			
+				if (boss!=null) {
+					this.boss.avanzar(astromegaship);
+					this.boss.dibujarse(entorno);
+					if ((astromegaship.y - this.boss.y < 33 && astromegaship.y - this.boss.y > -33) && 
+						(astromegaship.x - this.boss.x < 100 && astromegaship.x - this.boss.x > -100 )) 
+						{
+						System.out.println("PERDISTE MALO");
+						juego = false;
+						}
+					if (bala) {
+								if ((bulletsastromegaship.by - this.boss.y < 33 && bulletsastromegaship.by - this.boss.y > -33) &&
+									(bulletsastromegaship.bx - this.boss.x < 100 && bulletsastromegaship.bx - this.boss.x > -100 )) {
+									disparosaBoss++;
+									explosionx=this.boss.x;
+									explosiony=this.boss.y;
+									bala= false;
+									if (disparosaBoss==4) boss = null;
+									
+									entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
+									astromegaship.by=450;
+									}
+								}
+					}
+	
+		
+		
+			
+		for (int i = 0; i < bulletsdestructor.length; i++) {
+			if (this.boss != null && bulletsdestructor[i] == null) {
+				if (astromegaship.x-this.boss.x<5) {
+					bulletsdestructor[i] = new bulletDestructor(this.boss.x, this.boss.y);
+				}
+
+			}
+			
+			if (bulletsdestructor[i] != null) {
+
+				bulletsdestructor[i].avanzar();	
+				bulletsdestructor[i].dibujar(entorno);
+			}
+			if (bulletsdestructor[i] != null) {
+				if ((bulletsdestructor[i].by- astromegaship.y < 20 && bulletsdestructor[i].by - astromegaship.y > -20) &&
+						bulletsdestructor[i].bx - astromegaship.x < 50 && bulletsdestructor[i].bx - astromegaship.x > -50) {
+					vidasTotal--;
+					bulletsdestructor[i]=null;
+					vidas[vidasTotal - 1] = false;
+					System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
+				}
+			}
+			if (bulletsdestructor[i] != null) {
+				
+				if (bulletsdestructor[i].by > 600) {
+					bulletsdestructor[i] = null;
+				}
+			}
+
+				}
 		}
+		
+		
+		
+		
+		
 		if (juego==false) { //EN CASO DE QUE PERDAMOS, DESAPARECEMOS LOS OBJETOS.
 			astromegaship=null;
 			asteroid=null;
 			destructor=null;
+			boss = null;
 		}
 
 		if (!entorno.estaPresionada('P') && juego==true) 
@@ -442,9 +520,9 @@ public class Juego extends InterfaceJuego {
 					if (bulletsdestructor[i] != null) {
 						if ((bulletsdestructor[i].by- astromegaship.y < 20 && bulletsdestructor[i].by - astromegaship.y > -20) &&
 								bulletsdestructor[i].bx - astromegaship.x < 50 && bulletsdestructor[i].bx - astromegaship.x > -50) {
-							vidasTotal--;
+						
 							bulletsdestructor[i]=null;
-							vidas[vidasTotal - 1] = false;
+							
 							System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
 						}
 					}
@@ -526,7 +604,7 @@ public class Juego extends InterfaceJuego {
 								(astromegaship.x - this.boss.x < 100 && astromegaship.x - this.boss.x > -100 )) 
 								{
 								System.out.println("PERDISTE MALO");
-								System.exit(0);
+								juego = false;
 								}
 							if (bala) {
 										if ((bulletsastromegaship.by - this.boss.y < 33 && bulletsastromegaship.by - this.boss.y > -33) &&
