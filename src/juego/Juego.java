@@ -590,7 +590,7 @@ public class Juego extends InterfaceJuego {
 							this.destructor[i] = null;
 						}
 					if (contInvocar == 0) {
-						this.boss = new Boss();
+						this.boss = new Boss(); //Para que se invoque solo una vez.
 						contInvocar++;
 					}
 						
@@ -613,7 +613,7 @@ public class Juego extends InterfaceJuego {
 											explosionx=this.boss.x;
 											explosiony=this.boss.y;
 											bala= false;
-											if (disparosaBoss==4) boss = null;
+											if (disparosaBoss==4) boss = null; //4 Disparos y muere el boss
 											
 											entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
 											astromegaship.by=450;
