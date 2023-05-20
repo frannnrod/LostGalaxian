@@ -504,7 +504,15 @@ public class Juego extends InterfaceJuego {
 						}
 						asteroid[i] = null;
 						
-					}    
+					}
+					if (bala) {
+						if ((bulletsastromegaship.by - asteroid[i].y < 33 && bulletsastromegaship.by - asteroid[i].y > -33) &&
+								(bulletsastromegaship.bx - asteroid[i].x < 100 && bulletsastromegaship.bx - asteroid[i].x > -100 )) {
+								bala= false;
+								astromegaship.by=450;
+							}
+					}
+					 
 				}		
 			}
 			
@@ -541,6 +549,7 @@ public class Juego extends InterfaceJuego {
 											entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
 											astromegaship.by=450;
 											}
+										
 										}
 							}
 			
