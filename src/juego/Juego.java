@@ -17,32 +17,20 @@ public class Juego extends InterfaceJuego {
 	private AstroMegaShip astromegaship;
 	bulletDestructor [] bulletsdestructor;
 	bulletAstroMegaShip bulletsastromegaship;
-	Image imgFondo,loopFondo, vida, vidaMuerto, explosion, fin, fondoMenu;
+	Image imgFondo,loopFondo, vida, vidaMuerto, explosion, fin, fondoMenu, win,intro;
 	Boss  boss;
 	boolean juego = true;
-	boolean bala, balaenemigo, colisionDetectada, dioDisparo, cargarMenu = false;
-
+	boolean bala, balaenemigo, colisionDetectada, dioDisparo, cargarMenu, facil, medio, dificil, ganar, introMostrar = false;
 	public final char TECLA_ESC = 27;
-	int navesDestruidas = 0;
-	int navesDestruidas2 = 0;
-	int cantAst = 0;
-	int cantAstDest = 0;
-	int cantDest = 0;
+	int navesDestruidas, navesDestruidas2, cantAst, cantAstDest, cantDest, disparosaBoss, temp , rondas, contMenu, contInvocar, navesaDestruir,temp2 = 0;
 	boolean [] vidas = {true,true,true};
-	int disparosaBoss = 0;
 	int vidasTotal = 4;
 	double fondoy = 300;
 	double fondoy2= 900;
-	double explosionx;
-	double explosiony;
-	int temp = 0;
-	int rondas = 0 ;
-	int contMenu = 0;
+	double explosionx, explosiony, ultimodx, ultimody;
 	int random;
-	double ultimodx;
-	double ultimody;
 	Random gen = new Random();
-	int contInvocar = 0;
+
 	
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -56,8 +44,10 @@ public class Juego extends InterfaceJuego {
 		imgFondo = Herramientas.cargarImagen("fondo.png");
 		loopFondo = Herramientas.cargarImagen("fondoloop.png");
 		explosion = Herramientas.cargarImagen("explo.png");
-		fin = Herramientas.cargarImagen("fin.gif");
+		fin = Herramientas.cargarImagen("fin2.gif");
 		fondoMenu = Herramientas.cargarImagen("fondoMenu.gif");
+		win = Herramientas.cargarImagen("win.gif");
+		intro = Herramientas.cargarImagen("intro.gif");
 		
 		if (juego==true) 
 		{
@@ -98,19 +88,26 @@ public class Juego extends InterfaceJuego {
 	 * estado interno del juego para simular el paso del tiempo (ver el enunciado
 	 * del TP para mayor detalle).
 	 */
-	public void tick() {
-		
-	
+	public void tick() {	
+	temp2++;		
+	//MENU//
 		if (!cargarMenu) {
 			iniciarMenu();
 		}
 		else if (cargarMenu) {
+			if(temp2%1112>0 && introMostrar==true) {
+				entorno.dibujarImagen(intro, 400, 300,0, 2);
+			}
+			else {
+			introMostrar=false;
 			inicioJuego();
+			}
 		}
 	}
 	public void iniciarMenu() {
 		if(entorno.sePresiono(entorno.TECLA_ENTER)) {
 			cargarMenu = true;
+			introMostrar = true;
 			return;
 		}
 		else {
@@ -122,11 +119,43 @@ public class Juego extends InterfaceJuego {
 			if (entorno.sePresiono(entorno.TECLA_IZQUIERDA ) && contMenu>0) {
 				contMenu--;
 			}
+	//CIERRE MENU//
+	
+			
+	//DIFICULTAD//
+		if (contMenu==2) {
+			dificil=true;
+			medio=false;
+			facil=false;
+			
+		}
+		else if (contMenu==1) {
+			dificil=false;
+			medio=true;
+			facil=false;
+		}
+		else if (contMenu==0) {
+			dificil=false;
+			medio=false;
+			facil=true;
+			
+		}
+		if (dificil) {
+			navesaDestruir=45;		
+			
+		}
+		else if (medio) {
+			navesaDestruir=30;
+		}
+		else if (facil) {
+			navesaDestruir=15;
+		}
 		
+		//CIERRE DIFICULTAD
 	}
 		
 		
-	public void inicioJuego() {	
+	public void inicioJuego() {
 		
 		temp++; //Temporizador que se usa para marcar las salidas de los asteroides y naves
 		entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
@@ -148,29 +177,46 @@ public class Juego extends InterfaceJuego {
 			}
 			
 		}
-		 
+		 //PERDER//
 		if (vidas[0]== false) {
 			//PANTALLA DE FIN UNA VEZ QUE PERDIMOS
-			entorno.dibujarImagen(fin, 400, 300, 0);
-			entorno.cambiarFont("8-bit Arcade Out", 90, Color.magenta);
+			entorno.dibujarImagen(fin, 400, 300, 0,1.5);
+			entorno.cambiarFont("8-bit Arcade Out", 90, Color.black);
 			entorno.escribirTexto("PERDISTE",240,200);
-			entorno.cambiarFont("8-bit Arcade In", 90, Color.white);
+			entorno.cambiarFont("8-bit Arcade In", 90, Color.cyan);
 			entorno.escribirTexto("PERDISTE",240,200);
-			entorno.cambiarFont("8-bit Arcade Out", 50, Color.magenta);
-			entorno.escribirTexto("VOLVER A JUGAR",240,400);
-			entorno.cambiarFont("8-bit Arcade In", 50, Color.white);
-			entorno.escribirTexto("VOLVER A JUGAR",240,400);
-			entorno.cambiarFont("8-bit Arcade Out", 40, Color.magenta);
-			entorno.escribirTexto("APRIETE R",325,425);
-			entorno.cambiarFont("8-bit Arcade In", 40, Color.white);
-			entorno.escribirTexto("APRIETE R",325,425);
-			entorno.cambiarFont("8-bit Arcade Out", 55, Color.magenta);
+			entorno.cambiarFont("8-bit Arcade Out", 70, Color.black);
+			entorno.escribirTexto("VOLVER A JUGAR",180,300);
+			entorno.cambiarFont("8-bit Arcade In", 70, Color.white);
+			entorno.escribirTexto("VOLVER A JUGAR",180,300);
+			entorno.cambiarFont("8-bit Arcade Out", 50, Color.black);
+			entorno.escribirTexto("APRIETE R",305,350);
+			entorno.cambiarFont("8-bit Arcade In", 50, Color.cyan);
+			entorno.escribirTexto("APRIETE R",305,350);
+			entorno.cambiarFont("8-bit Arcade Out", 55, Color.black);
 			entorno.escribirTexto("ESC PARA SALIR",230,570);
 			entorno.cambiarFont("8-bit Arcade In", 55, Color.white);
 			entorno.escribirTexto("ESC PARA SALIR",230,570);
 			juego=false;
 		}
+		//CIERRE PERDER//
 		
+		//GANAR JUEGO//
+		
+		if(juego==false && ganar==true) {
+			entorno.dibujarImagen(win, 400, 300, 0,1.4);
+			entorno.cambiarFont("8-bit Arcade Out", 70, Color.black);
+			entorno.escribirTexto("FELICIDADES ESCAPASTE",60,145);
+			entorno.cambiarFont("8-bit Arcade In", 70, Color.white);
+			entorno.escribirTexto("FELICIDADES ESCAPASTE",60,145);
+			entorno.cambiarFont("8-bit Arcade Out", 50, Color.black);
+			entorno.escribirTexto("APRIETE ESC PARA SALIR",150,550);
+			entorno.cambiarFont("8-bit Arcade In", 50, Color.white);
+			entorno.escribirTexto("APRIETE ESC PARA SALIR",150,550);
+		}
+		
+		
+		//REINICIAR JUEGO//
 		if (juego==false && entorno.estaPresionada('R')) { 
 			//SI EL USUARIO DESEA VOLVER A JUGAR, VOLVEMOS A DIBUJAR LAS IMAGENES INICIALES Y REESTABLECEMOS LAS VARIABLES PRINCIPALES COMO SERIAN LAS VIDAS
 			 vidas[0] = true;
@@ -203,7 +249,7 @@ public class Juego extends InterfaceJuego {
 			temp = 0;
 			cantAst= 0;
 			cantDest=0;
-			if (temp % 60 == 0) {
+			if (temp % 40 == 0) {
 				if (cantAst<4 && gen.nextInt(2) == 1) {
 					for (int i=0;i<asteroid.length;i++) {
 						if (this.asteroid[i] == null) {
@@ -310,18 +356,15 @@ public class Juego extends InterfaceJuego {
 
 				}
 		}
-		
-		
-		
-		
-		
-		if (juego==false) { //EN CASO DE QUE PERDAMOS, DESAPARECEMOS LOS OBJETOS.
+		//CIERRE VOLVER A JUGAR//
+		//JUEGO TERMINADO O PERDIDO
+		if (juego==false) { 
 			astromegaship=null;
 			asteroid=null;
 			destructor=null;
 			boss = null;
 		}
-
+		//INICIO JUEGO
 		if (!entorno.estaPresionada('P') && juego==true) 
 		{
 			// FONDO LOOP//
@@ -392,7 +435,7 @@ public class Juego extends InterfaceJuego {
 			//RESPAWN//
 			
 			//ASTEROID//
-			if (temp % 60 == 0) {
+			if (temp % 40 == 0) {
 				if (cantAst<4 && gen.nextInt(2) == 1) {
 					for (int i=0;i<asteroid.length;i++) {
 						if (this.asteroid[i] == null) {
@@ -584,7 +627,7 @@ public class Juego extends InterfaceJuego {
 					
 					
 				//CONFIGURANDO BOSS//
-					if(navesDestruidas == 2) {
+					if(navesDestruidas == 50 && dificil) {
 						for (int i = 0; i < this.destructor.length; i++) {
 
 							this.destructor[i] = null;
@@ -620,10 +663,7 @@ public class Juego extends InterfaceJuego {
 											}
 										}
 							}
-			
-				
-				
-					
+						
 				for (int i = 0; i < bulletsdestructor.length; i++) {
 					if (this.boss != null && bulletsdestructor[i] == null) {
 						if (astromegaship.x-this.boss.x<5) {
@@ -654,7 +694,11 @@ public class Juego extends InterfaceJuego {
 					}
 
 						}
-		
+				//CIERRE BOSS//
+			if(navesaDestruir==navesDestruidas) {
+				juego=false;
+				ganar=true;
+			}
 		} 
 			
 				
