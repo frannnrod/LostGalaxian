@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Image;
 import java.util.Random;
 
+import javax.sound.sampled.Clip;
+
 import entorno.Entorno;
 import entorno.Herramientas;
 import entorno.InterfaceJuego;
@@ -18,6 +20,7 @@ public class Juego extends InterfaceJuego {
 	bulletDestructor [] bulletsdestructor;
 	bulletAstroMegaShip bulletsastromegaship;
 	Image imgFondo,loopFondo, vida, vidaMuerto, explosion, fin, fondoMenu, win,intro;
+	Clip musica,musicaOutro, sonidoDisparo;
 	Boss  boss;
 	boolean juego = true;
 	boolean bala, balaenemigo, colisionDetectada, dioDisparo, cargarMenu, facil, medio, dificil, ganar, introMostrar = false;
@@ -48,9 +51,12 @@ public class Juego extends InterfaceJuego {
 		fondoMenu = Herramientas.cargarImagen("fondoMenu.gif");
 		win = Herramientas.cargarImagen("win.gif");
 		intro = Herramientas.cargarImagen("intro.gif");
-		
+		musica = Herramientas.cargarSonido("ringstoneIntro.wav");
+		musicaOutro = Herramientas.cargarSonido("musicaOutro.wav");
+		sonidoDisparo = Herramientas.cargarSonido("disparo.wav");
 		if (juego==true) 
 		{
+			
 			astromegaship = new AstroMegaShip(400, 500);
 			bulletsastromegaship = null;
 			this.asteroid = new Asteroid[6]; 
@@ -97,6 +103,8 @@ public class Juego extends InterfaceJuego {
 		else if (cargarMenu) {
 			if(temp2%1112>0 && introMostrar==true) {
 				entorno.dibujarImagen(intro, 400, 300,0, 2);
+				musica.start();
+				
 			}
 			else {
 			introMostrar=false;
@@ -156,7 +164,8 @@ public class Juego extends InterfaceJuego {
 		
 		
 	public void inicioJuego() {
-		
+		musica.stop();
+		musicaOutro.start();
 		temp++; //Temporizador que se usa para marcar las salidas de los asteroides y naves
 		entorno.dibujarImagen(loopFondo, 400, fondoy2, 0);
 		
@@ -308,12 +317,14 @@ public class Juego extends InterfaceJuego {
 						juego = false;
 						}
 					if (bala) {
+						sonidoDisparo.start();
 								if ((bulletsastromegaship.by - this.boss.y < 33 && bulletsastromegaship.by - this.boss.y > -33) &&
 									(bulletsastromegaship.bx - this.boss.x < 100 && bulletsastromegaship.bx - this.boss.x > -100 )) {
 									disparosaBoss++;
 									explosionx=this.boss.x;
 									explosiony=this.boss.y;
 									bala= false;
+									sonidoDisparo.stop();
 									if (disparosaBoss==4) boss = null;
 									
 									entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
@@ -408,12 +419,13 @@ public class Juego extends InterfaceJuego {
 			}
 			
 			if (bala) {
-				if(bulletsastromegaship.by>0) {
+				sonidoDisparo.start();				if(bulletsastromegaship.by>0) {
 					bulletsastromegaship.avanzarDisparo();
 					bulletsastromegaship.dibujar(entorno);
 				}
 				else {
 					bala=false;	
+					
 					bulletsastromegaship=null;
 				}
 			}
@@ -506,9 +518,10 @@ public class Juego extends InterfaceJuego {
 						
 					}
 					if (bala) {
-						if ((bulletsastromegaship.by - asteroid[i].y < 33 && bulletsastromegaship.by - asteroid[i].y > -33) &&
+						sonidoDisparo.start();						if ((bulletsastromegaship.by - asteroid[i].y < 33 && bulletsastromegaship.by - asteroid[i].y > -33) &&
 								(bulletsastromegaship.bx - asteroid[i].x < 100 && bulletsastromegaship.bx - asteroid[i].x > -100 )) {
 								bala= false;
+								sonidoDisparo.stop();
 								astromegaship.by=450;
 							}
 					}
@@ -538,13 +551,14 @@ public class Juego extends InterfaceJuego {
 								vidasTotal--;
 								}
 							if (bala) {
-										if ((bulletsastromegaship.by - destructor[i].y < 33 && bulletsastromegaship.by - destructor[i].y > -33) &&
+								sonidoDisparo.start();											if ((bulletsastromegaship.by - destructor[i].y < 33 && bulletsastromegaship.by - destructor[i].y > -33) &&
 											(bulletsastromegaship.bx - destructor[i].x < 100 && bulletsastromegaship.bx - destructor[i].x > -100 )) {
 											navesDestruidas++;
 											navesDestruidas2++;
 											explosionx=destructor[i].x;
 											explosiony=destructor[i].y;
 											bala= false;
+											sonidoDisparo.stop();
 											destructor[i] = null;
 											entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
 											astromegaship.by=450;
@@ -627,9 +641,7 @@ public class Juego extends InterfaceJuego {
 					
 					
 					
-					
-					
-					
+		
 					
 					
 					
@@ -659,12 +671,13 @@ public class Juego extends InterfaceJuego {
 								juego = false;
 								}
 							if (bala) {
-										if ((bulletsastromegaship.by - this.boss.y < 33 && bulletsastromegaship.by - this.boss.y > -33) &&
+								sonidoDisparo.start();											if ((bulletsastromegaship.by - this.boss.y < 33 && bulletsastromegaship.by - this.boss.y > -33) &&
 											(bulletsastromegaship.bx - this.boss.x < 100 && bulletsastromegaship.bx - this.boss.x > -100 )) {
 											disparosaBoss++;
 											explosionx=this.boss.x;
 											explosiony=this.boss.y;
 											bala= false;
+											
 											if (disparosaBoss==4) boss = null; //4 Disparos y muere el boss
 											
 											entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
