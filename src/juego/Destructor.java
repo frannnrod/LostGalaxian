@@ -7,15 +7,12 @@ import entorno.Entorno;
 import entorno.Herramientas;
 
 public class Destructor {
-	 double x;
+	double x;
 	double y;
-	 double by;
-	 double bx;
-	private double diametro;
+	double by;
+	double bx;
 	private double velocidad;
-	 double angulo; 
-	private boolean atrapada;
-	private int[] signo; 
+	double angulo; 
 	Image img1;
 	Image bulletd;
 	boolean colision;
@@ -24,16 +21,11 @@ public class Destructor {
 	{
 		//this.x = x;
 		//this.y = y;
-		this.diametro = 20;
-		Random gen = new Random();
-		
+		Random gen = new Random();	
 		this.x = gen.nextDouble(800) + 1;
 		this.y = gen.nextInt(-10,20) + 1;
 		img1 = Herramientas.cargarImagen("destructor.png");
 		this.velocidad = 2;
-		
-
-		this.atrapada=false;
 		this.colision=false;
 		
 	}
@@ -47,13 +39,6 @@ public class Destructor {
 			entorno.dibujarImagen(img1,this.x, this.y, -0.2,0.16);
 	
 	}
-//	public void disparar(Entorno entorno) {
-//		entorno.dibujarImagen(bulletd, this.bx, this.by, 0,0.2);
-//		this.by+=5;
-//		if(this.by>600) {
-//			this.by=this.y;
-//		}
-	
 	public double disparoDestructor() {
 		return this.by;
 	}
@@ -87,7 +72,6 @@ public class Destructor {
 			this.y = 0 ;
 			if ((this.y > 424 && this.y <555) && (this.x - astromegaship.x) > -30 && (this.x - astromegaship.x) < 30);{
 				this.colision=true;
-				System.out.println("colision");
 			}
 		
 		}

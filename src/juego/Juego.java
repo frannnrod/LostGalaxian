@@ -21,9 +21,9 @@ public class Juego extends InterfaceJuego {
 	Music musica,musicaJuego, sonidoDisparo, menuMusica, musicaPerder , musicaGanar, musicaOleadaSuperada;
 	Boss  boss;
 	boolean juego = true;
-	boolean bala, balaenemigo, colisionDetectada, dioDisparo, cargarMenu, facil, medio, dificil, ganar, introMostrar, musicPerder, musicWin, pausa = false;
+	boolean bala, balaenemigo, colisionDetectada, dioDisparo, cargarMenu, facil, medio, dificil, ganar, introMostrar, musicPerder, musicWin, pausa, jefe = false;
 	public final char TECLA_ESC = 27;
-	int navesDestruidas, navesDestruidas2, cantAst, cantAstDest, cantDest, disparosaBoss, temp , contMenu, contInvocar, navesaDestruir,temp2, temp3m, temp4m, temp5 = 0;
+	int navesDestruidas, navesDestruidas2, cantAst, cantAstDest, cantDest, disparosaBoss, temp , contMenu, contInvocar, navesaDestruir,temp2, temp3m, temp4m, temp5, conteasteregg = 0;
 	boolean [] vidas = {true,true,true};
 	int vidasTotal = 4;
 	double fondoy = 300;
@@ -128,9 +128,13 @@ public class Juego extends InterfaceJuego {
 			return;
 		}
 		else {
-			Menu.principal(entorno,fondoMenu,contMenu);
+			Menu.principal(entorno,fondoMenu,contMenu,conteasteregg);
 			if (entorno.sePresiono(entorno.TECLA_DERECHA )&& contMenu<2) {
 				contMenu++;
+				}
+			if (entorno.sePresiono(entorno.TECLA_DERECHA )&& conteasteregg<7) {
+				conteasteregg++;
+				System.out.println(conteasteregg);
 				}
 			}
 			if (entorno.sePresiono(entorno.TECLA_IZQUIERDA ) && contMenu>0) {
@@ -163,12 +167,15 @@ public class Juego extends InterfaceJuego {
 	}
 	//SI EL USUARIO DESEA VOLVER A JUGAR, VOLVEMOS A DIBUJAR LAS IMAGENES INICIALES Y REESTABLECEMOS LAS VARIABLES PRINCIPALES COMO SERIAN LAS VIDAS
 	public void reset() {
-		this.boss = null;
 		juego=true;
 		astromegaship = new AstroMegaShip(400, 500);
-		this.asteroid = new Asteroid[4]; 
+		this.asteroid = new Asteroid[6]; 
 		this.destructor = new Destructor[6];
 		this.bulletsdestructor = new bulletDestructor[6];
+		this.boss = null;
+		jefe=false;
+		contInvocar = 0;
+		disparosaBoss = 0;
 		temp = 0;
 		temp2 = 0;
 		temp3m = 0;
@@ -194,6 +201,7 @@ public class Juego extends InterfaceJuego {
 	
 		
 	public void inicioJuego() {
+		musicaPerder.pausarMusica();
 		menuMusica.pausarMusica();
 		musicaJuego.reproducirMusica();
 		temp++; //Temporizador que se usa para marcar las salidas de los asteroides y naves
@@ -359,7 +367,7 @@ public class Juego extends InterfaceJuego {
 				navesDestruidas2=0;
 				cantDest=-3;
 			}
-			if (cantAstDest==1) {
+			if (cantAstDest==2) {
 				cantAstDest=0;
 				cantAst-=2;
 			}
@@ -368,7 +376,7 @@ public class Juego extends InterfaceJuego {
 			
 			//ASTEROID//
 			if (temp % 40 == 0) {
-				if (cantAst<4 && gen.nextInt(2) == 1) {
+				if (cantAst<6 && gen.nextInt(2) == 1) {
 					for (int i=0;i<asteroid.length;i++) {
 						if (this.asteroid[i] == null) {
 							this.asteroid[i] = new Asteroid();	
@@ -489,16 +497,13 @@ public class Juego extends InterfaceJuego {
 					}
 			
 				}
-				
 					
 				for (int i = 0; i < bulletsdestructor.length; i++) {
 					if (this.destructor[i] != null && bulletsdestructor[i] == null) {
 						if (astromegaship.x-destructor[i].x<5) {
 							bulletsdestructor[i] = new bulletDestructor(destructor[i].x, destructor[i].y);
+							}
 						}
-
-					}
-					
 					if (bulletsdestructor[i] != null) 
 					{	
 						bulletsdestructor[i].avanzar();	
@@ -518,9 +523,9 @@ public class Juego extends InterfaceJuego {
 							bulletsdestructor[i] = null;
 						}
 					}
-						
-
-				}
+							
+					}	
+				
 				//CIERRE DESTRUCTOR//
 				
 				
@@ -557,79 +562,69 @@ public class Juego extends InterfaceJuego {
 						}
 					}	
 				//CONFIGURANDO BOSS//
-					if(navesDestruidas == 45 && dificil) {
+					if(navesDestruidas == navesaDestruir && dificil) {
+						jefe=true;
 						for (int i = 0; i < this.destructor.length; i++) {
-
 							this.destructor[i] = null;
 						}
 					if (contInvocar == 0) {
-						this.boss = new Boss(); //Para que se invoque solo una vez.
+						this.boss = new Boss(400,100); //Para que se invoque solo una vez.
+						boss.easteregg(conteasteregg);
 						contInvocar++;
 					}
 						
 						
 					}
 					
-						if (boss!=null) {
-							this.boss.avanzar(astromegaship);
-							this.boss.dibujarse(entorno);
-							if ((astromegaship.y - this.boss.y < 33 && astromegaship.y - this.boss.y > -33) && 
-								(astromegaship.x - this.boss.x < 100 && astromegaship.x - this.boss.x > -100 )) 
-								{
-								System.out.println("PERDISTE MALO");
-								juego = false;
+					if (boss!=null) {
+						this.boss.avanzar(astromegaship);
+						this.boss.dibujarse(entorno);
+						if (bala) {
+							if ((bulletsastromegaship.by - this.boss.y < 33 && bulletsastromegaship.by - this.boss.y > -33) &&
+								(bulletsastromegaship.bx - this.boss.x < 100 && bulletsastromegaship.bx - this.boss.x > -100 )) {
+								disparosaBoss++;
+								explosionx=this.boss.x;
+								explosiony=this.boss.y;
+								bala= false;
 								}
-							if (bala) {
-//								sonidoDisparo.reproducirFX();
-								if ((bulletsastromegaship.by - this.boss.y < 33 && bulletsastromegaship.by - this.boss.y > -33) &&
-									(bulletsastromegaship.bx - this.boss.x < 100 && bulletsastromegaship.bx - this.boss.x > -100 )) {
-									disparosaBoss++;
-									explosionx=this.boss.x;
-									explosiony=this.boss.y;
-									bala= false;
-											
-								if (disparosaBoss==4) boss = null; //4 Disparos y muere el bos
-											entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
-											astromegaship.by=450;
-											}
-										}
 							}
+						if (disparosaBoss==25) 
+							{
+							boss = null;
+							jefe = false;
+							entorno.dibujarImagen(explosion,explosionx , explosiony, 0,0.2 );
+							astromegaship.by=450;
+							}
+						}
 						
-//				for (int i = 0; i < bulletsdestructor.length; i++) {
-//					if (this.boss != null && bulletsdestructor[i] == null) {
-//						if (astromegaship.x-this.boss.x<5) {
-//							bulletsdestructor[i] = new bulletDestructor(this.boss.x, this.boss.y);
-//						}
-//
-//					}
-//					
-//					if (bulletsdestructor[i] != null) {
-//	
-//						bulletsdestructor[i].avanzar();	
-//						bulletsdestructor[i].dibujar(entorno);
-//					}
-//					if (bulletsdestructor[i] != null) {
-//						if ((bulletsdestructor[i].by- astromegaship.y < 20 && bulletsdestructor[i].by - astromegaship.y > -20) &&
-//								bulletsdestructor[i].bx - astromegaship.x < 50 && bulletsdestructor[i].bx - astromegaship.x > -50) {
-//							vidasTotal--;
-//							bulletsdestructor[i]=null;
-//							vidas[vidasTotal - 1] = false;
-//							System.out.println("EL DESTRUCTOR LE DIO A MI NAVE");
-//						}
-//					}
-//					if (bulletsdestructor[i] != null) {
-//						
-//						if (bulletsdestructor[i].by > 600) {
-//							bulletsdestructor[i] = null;
-//						}
-//					}
-//
-//						}
+						for (int i = 0; i < bulletsdestructor.length; i++) {
+							if (this.boss != null && bulletsdestructor[i] == null) {
+								if (jefe) {
+									bulletsdestructor[i] = new bulletDestructor(this.boss.x, this.boss.y);
+									}
+							if (bulletsdestructor[i] != null) {
+								bulletsdestructor[i].avanzar();	
+								bulletsdestructor[i].dibujar(entorno);
+								}
+								if ((bulletsdestructor[i].by- astromegaship.y < 20 && bulletsdestructor[i].by - astromegaship.y > -20) &&
+									bulletsdestructor[i].bx - astromegaship.x < 50 && bulletsdestructor[i].bx - astromegaship.x > -50) {
+									vidasTotal--;
+									bulletsdestructor[i]=null;
+									vidas[vidasTotal - 1] = false;
+							
+								}
+							}
+							if (bulletsdestructor[i] != null && bulletsdestructor[i].by > 600) 
+								{	
+								
+									bulletsdestructor[i] = null;
+								}
+					}
 				//CIERRE BOSS//
-			if(navesaDestruir==navesDestruidas) {
-				juego=false;
-				ganar=true;
-			}
+			if(navesaDestruir==navesDestruidas && jefe==false) {
+						juego=false;
+						ganar=true;						
+					}
 		} 
 			
 		//PASAR OLEADA//

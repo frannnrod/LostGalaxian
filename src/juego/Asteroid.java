@@ -22,7 +22,7 @@ public class Asteroid {
 			this.x = gen.nextDouble(800) + 1;
 			this.y = gen.nextInt(20) + 1;
 			img1 = Herramientas.cargarImagen("asteroid.png");	
-			this.velocidad = 2;	
+			this.velocidad = 3;	
 			this.signo = new int[2];
 			this.signo[0] = -1;
 			this.signo[1] = 1;

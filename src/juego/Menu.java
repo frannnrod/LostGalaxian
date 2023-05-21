@@ -8,7 +8,7 @@ import entorno.Entorno;
 public class Menu {
 	int cantOleadas;
 	
-		public static boolean principal(Entorno e, Image fondo, int cont) {
+		public static boolean principal(Entorno e, Image fondo, int cont, int cont2) {
 			e.dibujarImagen(fondo, 400, 300, 0);
 			e.cambiarFont("8-bit Arcade Out", 90, Color.black);
 			e.escribirTexto("Lost Galaxian" , 130,200);
