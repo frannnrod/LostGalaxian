@@ -17,17 +17,18 @@ public class Juego extends InterfaceJuego {
 	private AstroMegaShip astromegaship;
 	bulletDestructor [] bulletsdestructor;
 	bulletAstroMegaShip bulletsastromegaship;
-	Image imgFondo,loopFondo, vida, vidaMuerto, explosion, fin, fondoMenu, win,intro;
+	Image imgFondo,loopFondo, vida, vidaMuerto, explosion, fin, fondoMenu, win, intro, levelup;
 	Music musica,musicaJuego, sonidoDisparo, menuMusica, musicaPerder , musicaGanar, musicaOleadaSuperada;
 	Boss  boss;
 	boolean juego = true;
-	boolean bala, balaenemigo, colisionDetectada, dioDisparo, cargarMenu, facil, medio, dificil, ganar, introMostrar, musicPerder, musicWin = false;
+	boolean bala, balaenemigo, colisionDetectada, dioDisparo, cargarMenu, facil, medio, dificil, ganar, introMostrar, musicPerder, musicWin, pausa = false;
 	public final char TECLA_ESC = 27;
-	int navesDestruidas, navesDestruidas2, cantAst, cantAstDest, cantDest, disparosaBoss, temp , rondas, contMenu, contInvocar, navesaDestruir,temp2, temp3m, temp4m = 0;
+	int navesDestruidas, navesDestruidas2, cantAst, cantAstDest, cantDest, disparosaBoss, temp , contMenu, contInvocar, navesaDestruir,temp2, temp3m, temp4m, temp5 = 0;
 	boolean [] vidas = {true,true,true};
 	int vidasTotal = 4;
 	double fondoy = 300;
 	double fondoy2= 900;
+	int cantOleadas =1;
 	double explosionx, explosiony, ultimodx, ultimody;
 	int random;
 	Random gen = new Random();
@@ -49,6 +50,7 @@ public class Juego extends InterfaceJuego {
 		fondoMenu = Herramientas.cargarImagen("fondoMenu.gif");
 		win = Herramientas.cargarImagen("win.gif");
 		intro = Herramientas.cargarImagen("intro.gif");
+		levelup = Herramientas.cargarImagen("levelup.gif");
 		musicaJuego = new Music("/musicaJuego.wav");
 		sonidoDisparo = new Music("/disparo.wav");
 		menuMusica = new Music("/menu.wav");
@@ -142,33 +144,54 @@ public class Juego extends InterfaceJuego {
 			dificil=true;
 			medio=false;
 			facil=false;
+			navesaDestruir=45;		
 			
 		}
 		else if (contMenu==1) {
 			dificil=false;
 			medio=true;
 			facil=false;
+			navesaDestruir=30;
 		}
 		else if (contMenu==0) {
 			dificil=false;
 			medio=false;
-			facil=true;
-			
-		}
-		if (dificil) {
-			navesaDestruir=45;		
-			
-		}
-		else if (medio) {
-			navesaDestruir=30;
-		}
-		else if (facil) {
+			facil=true;	
 			navesaDestruir=15;
 		}
-		
 		//CIERRE DIFICULTAD
 	}
-		
+	//SI EL USUARIO DESEA VOLVER A JUGAR, VOLVEMOS A DIBUJAR LAS IMAGENES INICIALES Y REESTABLECEMOS LAS VARIABLES PRINCIPALES COMO SERIAN LAS VIDAS
+	public void reset() {
+		this.boss = null;
+		juego=true;
+		astromegaship = new AstroMegaShip(400, 500);
+		this.asteroid = new Asteroid[4]; 
+		this.destructor = new Destructor[6];
+		this.bulletsdestructor = new bulletDestructor[6];
+		temp = 0;
+		temp2 = 0;
+		temp3m = 0;
+		temp4m = 0;
+		cantAst= 0;
+		cantDest=0;
+		for (int i = 0; i<vidas.length;i++) 
+		{
+			if (vidas[i]) 
+			{
+				entorno.dibujarImagen(vida, 25 + (i * 50), 25, 0,0.15);
+				if (dioDisparo) 
+				{
+					entorno.dibujarImagen(vidaMuerto, 25 + (i * 50), 25, 0,0.15);
+				}
+			}
+			else 
+			{
+				entorno.dibujarImagen(vidaMuerto, 25 + (i * 50), 25, 0, 0.15);
+			}
+		}
+	}
+	
 		
 	public void inicioJuego() {
 		menuMusica.pausarMusica();
@@ -230,7 +253,7 @@ public class Juego extends InterfaceJuego {
 		
 		if(juego==false && ganar==true) {
 			temp4m++;
-			if (temp4m % 500 > 0 && musicWin==false) {
+			if (temp4m % 300 > 0 && musicWin==false) {
 				musicaGanar.reproducirMusica();
 			}
 			else {
@@ -251,42 +274,14 @@ public class Juego extends InterfaceJuego {
 		
 		//REINICIAR JUEGO//
 		if (juego==false && entorno.estaPresionada('R')) { 
-			//SI EL USUARIO DESEA VOLVER A JUGAR, VOLVEMOS A DIBUJAR LAS IMAGENES INICIALES Y REESTABLECEMOS LAS VARIABLES PRINCIPALES COMO SERIAN LAS VIDAS
+			reset();
+			navesDestruidas = 0;
 			vidas[0] = true;
 			vidas[1] = true;
 			vidas[2] = true;
-			contInvocar = 0;
-			this.boss = null;
 			vidasTotal = 4;
-			navesDestruidas = 0;
-			juego=true;
-			astromegaship = new AstroMegaShip(400, 500);
-			this.asteroid = new Asteroid[4]; 
-			this.destructor = new Destructor[6];
-			this.bulletsdestructor = new bulletDestructor[6];
-			temp = 0;
-			temp2 = 0;
-			temp3m = 0;
-			temp4m = 0;
-			cantAst= 0;
-			cantDest=0;
-			for (int i = 0; i<vidas.length;i++) 
-			{
-				if (vidas[i]) 
-				{
-					entorno.dibujarImagen(vida, 25 + (i * 50), 25, 0,0.15);
-					if (dioDisparo) 
-					{
-					entorno.dibujarImagen(vidaMuerto, 25 + (i * 50), 25, 0,0.15);
-					}
-				}
-				else 
-				{
-					 entorno.dibujarImagen(vidaMuerto, 25 + (i * 50), 25, 0, 0.15);
-				}
-			}
 			inicioJuego();
-		}
+			}
 		//CIERRE VOLVER A JUGAR//
 		//JUEGO TERMINADO O PERDIDO
 		if (juego==false) { 
@@ -297,8 +292,8 @@ public class Juego extends InterfaceJuego {
 			boss = null;
 		}
 		//INICIO JUEGO
-		if (!entorno.estaPresionada('P') && juego==true) 
-		{
+		if (!entorno.estaPresionada('P') && juego==true && pausa==false) 
+		{	
 			// FONDO LOOP//
 			fondoy2-=1;
 			fondoy-=1;
@@ -451,7 +446,7 @@ public class Juego extends InterfaceJuego {
 					}
 					if (bala) {
 						if ((bulletsastromegaship.by - asteroid[i].y < 33 && bulletsastromegaship.by - asteroid[i].y > -33) &&
-								(bulletsastromegaship.bx - asteroid[i].x < 100 && bulletsastromegaship.bx - asteroid[i].x > -100 )) {
+								(bulletsastromegaship.bx - asteroid[i].x < 40 && bulletsastromegaship.bx - asteroid[i].x > -40 )) {
 								bala= false;
 								astromegaship.by=450;
 							}
@@ -527,6 +522,10 @@ public class Juego extends InterfaceJuego {
 
 				}
 				//CIERRE DESTRUCTOR//
+				
+				
+				
+				
 				
 				//LOGICA CUANDO HAY UNA COLISION ENTRE ASTEROIDE Y DESTRUCTOR//
 					for (int i=0;i<destructor.length;i++) 
@@ -633,6 +632,23 @@ public class Juego extends InterfaceJuego {
 			}
 		} 
 			
+		//PASAR OLEADA//
+		if (navesDestruidas == 5*cantOleadas) {
+			temp5++;
+			if (navesaDestruir!=navesDestruidas && temp5%100>0) {
+				pausa=true;
+				entorno.cambiarFont("8-bit Arcade Out", 90, Color.white);
+				entorno.escribirTexto("OLEADA SUPERADA",70,300);
+				entorno.cambiarFont("8-bit Arcade In", 90, Color.magenta);
+				entorno.escribirTexto("OLEADA SUPERADA",70,300);
+			}
+			else {
+				reset();
+				pausa=false;
+				cantOleadas+=1;
+			}
+			
+		}
 				
 			
 	//CIERRE JUEGO
