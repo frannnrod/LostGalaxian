@@ -1,39 +1,58 @@
 package juego;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.File;
-import java.io.IOException;
+
+import javax.sound.sampled.*;
+import java.io.InputStream;
+
 public class Music {
-	public static void reproducirAudio(String rutaArchivo) {
-	    try {
-	        // Cargar el archivo de audio
-	        File audioIntro = new File(rutaArchivo);
-	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioIntro);
+	Clip clip;
+	AudioInputStream audioInputStream;
 
-	        // Crear el clip de audio
-	        Clip clip = AudioSystem.getClip();
+	public Music(String rutaArchivo) {
+		try {
+			// Carga el archivo de sonido
+			InputStream inputStream = getClass().getResourceAsStream(rutaArchivo);
+			audioInputStream = AudioSystem.getAudioInputStream(inputStream);
+			clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	        // Abrir el archivo de audio en el clip
-	        clip.open(audioInputStream);
+	public void reproducirFX() {
+		try {
+			if (clip != null) {
+				// Reinicia el sonido desde el principio
+				clip.setFramePosition(0);
+				clip.start();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	        // Reproducir el audio
-	        clip.start();
+	public void reproducirMusica() {
+		try {
+			// Reproduce la música de forma continua
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
 
-	        // Esperar hasta que se termine de reproducir
-	        while (!clip.isRunning())
-	            Thread.sleep(10);
-	        while (clip.isRunning())
-	            Thread.sleep(10);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	        // Cerrar el clip y el stream de audio
-	        clip.close();
-	        audioInputStream.close();
-	    } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException e) {
-	        e.printStackTrace();
-	    }
+	public void pausarMusica() {
+		if (clip != null && clip.isRunning()) {
+			clip.stop();
+		}
+	}
+
+	public void pararMusica() {
+		if (clip != null && clip.isRunning()) {
+			clip.stop();
+			clip.setFramePosition(0);
+		}
 	}
 
 }
+
