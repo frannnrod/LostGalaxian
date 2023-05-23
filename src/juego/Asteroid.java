@@ -62,6 +62,7 @@ public class Asteroid {
 		;
 
 	}
+	
 
 	public double getY() {
 		return this.y;

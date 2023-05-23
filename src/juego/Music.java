@@ -2,15 +2,14 @@ package juego;
 
 import javax.sound.sampled.*;
 import java.io.InputStream;
-
 public class Music {
 	Clip clip;
 	AudioInputStream audioInputStream;
 
-	public Music(String rutaArchivo) {
+	public Music (String ruta) {
 		try {
 			// Carga el archivo de sonido
-			InputStream inputStream = getClass().getResourceAsStream(rutaArchivo);
+			InputStream inputStream = getClass().getResourceAsStream(ruta);
 			audioInputStream = AudioSystem.getAudioInputStream(inputStream);
 			clip = AudioSystem.getClip();
 			clip.open(audioInputStream);

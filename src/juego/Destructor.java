@@ -76,6 +76,8 @@ public class Destructor {
 
 		}
 	}
+	
+
 
 	public double getY() {
 		return this.y;

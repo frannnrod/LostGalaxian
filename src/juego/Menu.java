@@ -85,17 +85,4 @@ public class Menu {
 		}
 		return true;
 	}
-
-	public void crearOleadas(int cont) {
-		if (cont == 0) {
-			cantOleadas = 3;
-		}
-		if (cont == 1) {
-			cantOleadas = 6;
-		}
-		if (cont == 2) {
-			cantOleadas = 10;
-		}
-	}
-
 }
